@@ -26,6 +26,13 @@ class CellRegion {
     CellRegion& nominateSuperposition(){
         // TODO
     }
+    /**
+     * @brief collapse a child
+     * 
+     * @param cr child region
+     * @return true : changed region with no errors
+     * @return false : options.size()==0
+     */
     bool collapse(CellRegion *cr){
         // TODO
     }

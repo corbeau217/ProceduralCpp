@@ -49,6 +49,8 @@ class Lattice{
             return *cells[col][row];
     }
     
+
+
     
     private:
 

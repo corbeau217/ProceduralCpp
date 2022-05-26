@@ -27,6 +27,9 @@ class Cell {
         //TODO
     }
 
+    
+
+
 
     private:
     // drawing variables
