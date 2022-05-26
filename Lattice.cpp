@@ -3,13 +3,18 @@
 class Lattice{
     public:
     // constructor
-    Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn)
-        :x{xLoc},y{yLoc},colCount{colCountIn},rowCount{rowCountIn},cellSize{cellSizeIn} {
-            // have a colCount length array of Cell** 
-            cells = new Cell**[colCount];
-            for(int idx = 0; idx < colCount; idx++)
-                // each Cell* is rowCount of Cell*
-                cells[idx] = new Cell*[rowCount];
+    Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn) {
+
+        x = xLoc;
+        y = yLoc;
+        colCount = colCountIn;
+        rowCount = rowCountIn;
+        cellSize = cellSizeIn;
+        // have a colCount length array of Cell** 
+        cells = new Cell**[colCount];
+        for(int idx = 0; idx < colCount; idx++)
+            // each Cell* is rowCount of Cell*
+            cells[idx] = new Cell*[rowCount];
     }
     // destructor
     ~Lattice(){

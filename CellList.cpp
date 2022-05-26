@@ -5,10 +5,18 @@ const int MIN_SIZE {10};
 
 class CellList{
     public:
-    CellList()
-        :elem{new Cell*[MIN_SIZE]},n{0},sz{MIN_SIZE},currIdx{0}{}
-    CellList(int size)
-        :elem{new Cell*[size]},n{0},sz{size},currIdx{0}{}
+    CellList() {
+        elem = new Cell*[MIN_SIZE]; 
+        n = 0;
+        sz = MIN_SIZE;
+        currIdx = 0;
+    }
+    CellList(int size) {
+        elem = new Cell*[size];
+        n = 0;
+        sz = size;
+        currIdx = 0;
+    }
     ~CellList(){
         // we should revisit this, we might have cooked it doing this
         delete[] elem;

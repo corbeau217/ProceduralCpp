@@ -24,7 +24,7 @@ void drawLoop(){
     // handles the draw loop
     while(!WindowShouldClose()){
         BeginDrawing();
-        ClearBackground(GRAY);
+        //ClearBackground(GRAY);
         EndDrawing();
     }
 }
