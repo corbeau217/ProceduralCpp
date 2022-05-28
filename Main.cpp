@@ -1,6 +1,5 @@
-#include <cstdio>
 #include "raylib.h"
-
+//#include <iostream>
 
 
 
@@ -18,17 +17,27 @@ void setupApp(){
     // this sets up the app
     appWidth = 500;
     appHeight = 500;
-    InitWindow(getWidth(),getHeight(),"Yem");
+    InitWindow( getWidth(), getHeight(), "Yem");
 }
+
+void framePaint(){
+    // TODO
+    //std::cout << "yem";
+    Color bleh;
+    bleh = (Color){200,200,200,255};
+    DrawCircle(50,50,20,bleh);
+}
+
 void drawLoop(){
     // handles the draw loop
-    while(!WindowShouldClose()){
+    while( !WindowShouldClose() ){
         BeginDrawing();
-        //ClearBackground(GRAY);
+        framePaint();
         EndDrawing();
     }
 }
-int main(){
+
+int main(){// main landing point
     setupApp();
-    drawLoop();
+    InitWindow(appWidth,appHeight, "Circle mover"); 
 }
