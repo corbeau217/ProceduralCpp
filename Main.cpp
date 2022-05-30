@@ -23,9 +23,7 @@ void setupApp(){
 void framePaint(){
     // TODO
     //std::cout << "yem";
-    Color bleh;
-    bleh = (Color){200,200,200,255};
-    DrawCircle(50,50,20,bleh);
+    ClearBackground(GRAY);
 }
 
 void drawLoop(){
