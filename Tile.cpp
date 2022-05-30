@@ -1,4 +1,4 @@
-
+#include "raylib.h"
 
 class Tile{
     public:
@@ -32,10 +32,11 @@ class Tile{
     }
 
     /**
-     * @brief Set the Color of this tile
+     * @brief Set the color of this cell
      * 
+     * @param c : color to set this tile to use
      */
-    void setColor(){
+    void setColor(Color c){
         // TODO
     }
 
@@ -43,4 +44,5 @@ class Tile{
 
     private:
     char *tileName;
+    Color *tileColor;
 };
