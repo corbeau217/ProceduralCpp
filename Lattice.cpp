@@ -42,6 +42,9 @@ class Lattice{
             // each Cell* is rowCount of Cell*
             cells[idx] = new Cell*[rowCount];
         builtGrid = false;
+        
+        Cell::CellMain();
+        
     }
 
     // destructor
@@ -53,6 +56,7 @@ class Lattice{
             delete cells[x];
         }
         delete cells;
+        Cell::StaticCleanup();
     }
 
     /**

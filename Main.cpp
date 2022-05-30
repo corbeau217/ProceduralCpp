@@ -47,6 +47,12 @@ void drawLoop(){
     }
 }
 
+void cleanupApp(){
+    //TODO
+}
+
 int main(){// main landing point
     setupApp();
+    drawLoop();
+    cleanupApp();
 }

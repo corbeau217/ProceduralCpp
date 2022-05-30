@@ -39,8 +39,9 @@ class Cell {
     }
     // destructor
     ~Cell(){
-        //TODO
+        delete tile;
     }
+
 
     int getCol(){
         return col;
@@ -141,6 +142,21 @@ class Cell {
         DrawRectangle(xPos,yPos,width,height,*tileColor);
         // draw outline
         DrawRectangleLines(xPos,yPos,width,height,BLACK);
+    }
+
+
+
+    /**
+     * @brief static handle for cell
+     * 
+     */
+    static void CellMain(){
+        Tile::setupTileOptions();
+    }
+
+    static void StaticCleanup(){
+        //TODO: delete the static stuffs
+        Tile::staticCleanup();
     }
 
     private:
