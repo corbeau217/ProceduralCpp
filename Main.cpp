@@ -18,6 +18,8 @@ int getHeight(){
 }
 
 void setupApp(){
+    // setup randoming
+    Randoming::setup();
     // setup our ammounts
     leftMargin = 15;
     topMargin = 15;

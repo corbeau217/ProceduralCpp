@@ -1,7 +1,7 @@
 #include "Tile.cpp"
 
 
-#define TILEOPTIONS 5
+#define TILEOPTIONCOUNT 5
 
 /**
  * @brief this is the cell that goes into lattice
@@ -18,9 +18,9 @@
 class Cell {
     public:
     // constructor
-    Cell(){
-        // TODO : default constructor
-    }
+    // Cell(){
+    //     // TODO : default constructor
+    // }
     Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
             xPos = xIn;
             yPos = yIn;
@@ -28,6 +28,9 @@ class Cell {
             height = sIn;
             col = colIn;
             row = rowIn;
+            canBeTile = new bool[TILEOPTIONCOUNT];
+            for(int i = 0; i < TILEOPTIONCOUNT; i++)
+                canBeTile[i] = true;
         }
     Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
             xPos = xIn;
@@ -36,10 +39,14 @@ class Cell {
             height = hIn;
             col = colIn;
             row = rowIn;
+            canBeTile = new bool[TILEOPTIONCOUNT];
+            for(int i = 0; i < TILEOPTIONCOUNT; i++)
+                canBeTile[i] = true;
     }
     // destructor
     ~Cell(){
         delete tile;
+        delete canBeTile;
     }
 
 
@@ -54,10 +61,17 @@ class Cell {
      * @brief returns how many options this cell has
      * 
      * @return int : -1 if already set, otherwise returns the option count
+     * 
+     * TODO: check if this behaves correctly with empty tile reference, might need null tiles
      */
     int getEntropy(){
-        //TODO
-        return 0;
+        if(tile!=nullptr)
+            return -1;
+        int counter = 0;
+        for(int i = 0; i < TILEOPTIONCOUNT; i++)
+            if(canBeTile[i])
+                ++counter;
+        return counter;
     }
     bool hasEntropy(){
         return getEntropy()>-1;
@@ -90,7 +104,9 @@ class Cell {
      * @param t : tile object
      */
     void setTile(Tile *t){
-        // TODO
+        tile = t;
+        for(int i = 0; i < TILEOPTIONCOUNT; i++)
+            canBeTile[i] = false;
     }
 
     /**
@@ -113,8 +129,18 @@ class Cell {
      * @return false : otherwise
      */
     bool propagateNearbyTile(Tile *t){
-        //TODO
-        return false;
+        bool didWeModify = false;
+        // loop through all tile options
+        for(int i = 0; i < TILEOPTIONCOUNT; i++){
+            if(canBeTile[i]){
+                //store if we can be near
+                canBeTile[i] = Tile::getTileOption(i)->canBeNear(t);
+                if(!canBeTile[i])
+                    // suddenly we cant, mark that there was an update
+                    didWeModify = true;
+            }
+        }
+        return didWeModify;
     }
 
     /**
@@ -124,6 +150,25 @@ class Cell {
      * @return false : no change due to error or due to no need
      */
     bool collapse(){
+        // get how many options we can be
+        int optionCount = getEntropy();
+        if(optionCount<1) // no options return false
+            return false;
+        // otherwise we choose an option randomly
+        int randomExistingOption = Randoming::getRandom(optionCount);
+        // loop through our options to find the one we chose
+        for(int i = 0, k = 0; i < TILEOPTIONCOUNT; i++){
+            // check is valid option
+            if(canBeTile[i]){
+                // check random number
+                if(k==randomExistingOption){
+                    //we found our option, collapse to this one
+                    setTile(Tile::getTileOption(i));
+                    return true;
+                }
+                ++k;
+            }
+        }
         return false;
     }
 
@@ -171,4 +216,6 @@ class Cell {
     //int layer; //would be used when 3d
     // these are for tile options
     Tile* tile;
+    // keep track of what tiles we can be
+    bool* canBeTile;
 };

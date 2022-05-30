@@ -12,8 +12,6 @@
 /**
  * @brief this is the tiles that we can use
  * 
- * TODO: need to setup a list of possible tiles that we can have,
- *      then have a way to check the index of a tile comparing it to that list
  * 
  */
 class Tile{
@@ -151,6 +149,10 @@ class Tile{
      */
     static void staticCleanup(){
         delete tileOptions;
+    }
+
+    static Tile *getTileOption(int idx){
+        return tileOptions[idx];
     }
 
     private:

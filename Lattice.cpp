@@ -1,5 +1,6 @@
 #include "Cell.cpp"
 #include <iostream>
+#include <time.h>
 
 using namespace std;
 
@@ -9,15 +10,25 @@ using namespace std;
 class Randoming{
     public:
     /**
+     * @brief sets up our randomizing agent with a seed
+     * 
+     */
+    static void setup(){
+        seed = time(0);
+        srand(seed);
+    }
+
+    /**
      * @brief Get random number within bounding
      * 
      * @param bounding : return is less than this value
      * @return int : value between 0 and bounding
      */
     static int getRandom(int bounding){
-        //TODO
-        return 0;
+        return rand() % bounding;
     }
+    
+    static unsigned int seed;
 };
 
 #define ADJACENT_LIST_SIZE 8
