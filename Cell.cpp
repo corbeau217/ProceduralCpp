@@ -1,6 +1,8 @@
 #include "Tile.cpp"
 
 
+#define TILEOPTIONS 5
+
 /**
  * @brief this is the cell that goes into lattice
  * 
@@ -16,16 +18,16 @@ class Cell {
         // TODO : default constructor
     }
     Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
-            x = xIn;
-            y = yIn;
+            xPos = xIn;
+            yPos = yIn;
             width = sIn;
             height = sIn;
             col = colIn;
             row = rowIn;
         }
     Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
-            x = xIn;
-            y = yIn;
+            xPos = xIn;
+            yPos = yIn;
             width = wIn;
             height = hIn;
             col = colIn;
@@ -44,14 +46,26 @@ class Cell {
     }
 
     /**
-     * @brief : choose random option available out of the tile options
+     * @brief returns how many options this cell has
      * 
-     * @return true : if there was any change that would need propagation
-     * @return false : no change due to error or due to no need
+     * @return int : -1 if already set, otherwise returns the option count
      */
-    bool collapseOptions(){
+    int getEntropy(){
         //TODO
-        return false;
+        return 0;
+    }
+    bool hasEntropy(){
+        return getEntropy()>-1;
+    }
+
+    /**
+     * @brief checks if we've chosen a tile
+     * 
+     * @return true : no entropy
+     * @return false : otherwise
+     */
+    bool chosenTile(){
+        return getEntropy()==-1;
     }
 
     /**
@@ -61,9 +75,9 @@ class Cell {
      * @return false : if no options / already collapsed this cell
      */
     bool hasOptions(){
-        // TODO
-        return false;
+        return getEntropy()>0;
     }
+
 
     /**
      * @brief Set the Tile object
@@ -80,33 +94,11 @@ class Cell {
      * @return Tile* : returns nullptr if still has entropy
      */
     Tile *getTile(){
-        if(getEntropy()==-1)
+        if(chosenTile())
             return tile;
         return nullptr;
     }
 
-    /**
-     * @brief returns how many options this cell has
-     * 
-     * @return int : -1 if already set, otherwise returns the option count
-     */
-    int getEntropy(){
-        //TODO
-        return 0;
-    }
-    bool hasEntropy(){
-        return getEntropy()>-1;
-    }
-
-    /**
-     * @brief this handles collapsing this tile into one of the options it can be
-     * 
-     * @return true : if there was a change to this tile, requiring propagation
-     * @return false : otherwise
-     */
-    bool collapse(){
-        return false;
-    }
 
     /**
      * @brief tell this cell it's nearby a tile
@@ -121,17 +113,36 @@ class Cell {
     }
 
     /**
+     * @brief : choose random option available out of the tile options
+     * 
+     * @return true : if there was any change that would need propagation
+     * @return false : no change due to error or due to no need
+     */
+    bool collapse(){
+        return false;
+    }
+
+    /**
      * @brief handles drawing the frame of the cell
      * 
      */
     void paint(){
-        //TODO
+        Color *tileColor;
+        // try get tile color
+        if(chosenTile())
+            tileColor = tile->getColor();
+        else
+            *tileColor = WHITE;
+        // draw fill
+        DrawRectangle(xPos,yPos,width,height,*tileColor);
+        // draw outline
+        DrawRectangleLines(xPos,yPos,width,height,BLACK);
     }
 
     private:
     // drawing variables
-    int x;
-    int y;
+    int xPos;
+    int yPos;
     int width;
     int height;
     // lattice variables
@@ -140,7 +151,4 @@ class Cell {
     //int layer; //would be used when 3d
     // these are for tile options
     Tile* tile;
-
-    // TODO: use this to tell if we've chose a tile
-    bool chosenTile;
 };

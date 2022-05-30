@@ -1,5 +1,8 @@
 #include "raylib.h"
 
+
+#define TILEOPTIONS 5
+
 class Tile{
     public:
     //constructor
@@ -40,7 +43,14 @@ class Tile{
         // TODO
     }
 
-
+    /**
+     * @brief Get the Color object
+     * 
+     * @return Color* : color of this tile
+     */
+    Color *getColor(){
+        return tileColor;
+    }
 
     private:
     char *tileName;

@@ -4,6 +4,7 @@
 using namespace std;
 
 
+#define TILEOPTIONS 5
 
 class Randoming{
     public:
@@ -19,7 +20,6 @@ class Randoming{
     }
 };
 
-#define TILEOPTIONS 5
 #define ADJACENT_LIST_SIZE 8
 
 /**
