@@ -76,6 +76,9 @@ class Cell {
         //TODO
         return 0;
     }
+    bool hasEntropy(){
+        return getEntropy()>-1;
+    }
 
 
 
