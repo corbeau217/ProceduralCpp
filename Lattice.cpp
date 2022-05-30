@@ -16,6 +16,7 @@ class Lattice{
             // each Cell* is rowCount of Cell*
             cells[idx] = new Cell*[rowCount];
     }
+
     // destructor
     ~Lattice(){
         for(int x = 0; x < colCount; x++){
@@ -26,6 +27,7 @@ class Lattice{
         }
         delete cells;
     }
+
     /**
      * @brief checks if there is a valid location with col and row idx
      * 
@@ -37,6 +39,7 @@ class Lattice{
     bool isValidLocation(int col, int row){
         return (col>-1&&row>-1)&&(col<colCount&&row<rowCount);
     }
+
     /**
      * @brief : get the cell at col row
      * 
@@ -47,6 +50,7 @@ class Lattice{
     Cell& get(int col, int row){
         if(isValidLocation(col,row))
             return *cells[col][row];
+        
     }
     
 
