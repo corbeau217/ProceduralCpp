@@ -1,10 +1,14 @@
 #include "raylib.h"
+#include "Lattice.cpp"
 //#include <iostream>
 
 
 
 int appWidth;
 int appHeight;
+int leftMargin;
+int topMargin;
+Lattice *grid;
 
 int getWidth(){
     return appWidth;
@@ -14,16 +18,24 @@ int getHeight(){
 }
 
 void setupApp(){
+    // setup our ammounts
+    leftMargin = 15;
+    topMargin = 15;
+    int colCount = 20;
+    int rowCount = 20;
+    int cellSize = 35;
     // this sets up the app
-    appWidth = 500;
-    appHeight = 500;
-    InitWindow( getWidth(), getHeight(), "Yem");
+    appWidth = leftMargin*2 + cellSize*colCount;
+    appHeight = topMargin*2 + cellSize*rowCount;
+    // setup the grid
+    *grid = {leftMargin,topMargin,colCount,rowCount,cellSize};
+
+    InitWindow( getWidth(), getHeight(), "Procedural C++");
 }
 
 void framePaint(){
-    // TODO
-    //std::cout << "yem";
     ClearBackground(GRAY);
+    grid->paint();
 }
 
 void drawLoop(){
@@ -37,5 +49,4 @@ void drawLoop(){
 
 int main(){// main landing point
     setupApp();
-    InitWindow(appWidth,appHeight, "Circle mover"); 
 }

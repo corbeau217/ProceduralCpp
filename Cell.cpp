@@ -36,6 +36,13 @@ class Cell {
         //TODO
     }
 
+    int getCol(){
+        return col;
+    }
+    int getRow(){
+        return row;
+    }
+
     /**
      * @brief : choose random option available out of the tile options
      * 
@@ -68,6 +75,17 @@ class Cell {
     }
 
     /**
+     * @brief Get a reference to the tile this cell has
+     * 
+     * @return Tile* : returns nullptr if still has entropy
+     */
+    Tile *getTile(){
+        if(getEntropy()==-1)
+            return tile;
+        return nullptr;
+    }
+
+    /**
      * @brief returns how many options this cell has
      * 
      * @return int : -1 if already set, otherwise returns the option count
@@ -80,7 +98,35 @@ class Cell {
         return getEntropy()>-1;
     }
 
+    /**
+     * @brief this handles collapsing this tile into one of the options it can be
+     * 
+     * @return true : if there was a change to this tile, requiring propagation
+     * @return false : otherwise
+     */
+    bool collapse(){
+        return false;
+    }
 
+    /**
+     * @brief tell this cell it's nearby a tile
+     * 
+     * @param t : the tile reference it's nearby
+     * @return true : if there was a change to this cell's options
+     * @return false : otherwise
+     */
+    bool propagateNearbyTile(Tile *t){
+        //TODO
+        return false;
+    }
+
+    /**
+     * @brief handles drawing the frame of the cell
+     * 
+     */
+    void paint(){
+        //TODO
+    }
 
     private:
     // drawing variables
@@ -94,4 +140,7 @@ class Cell {
     //int layer; //would be used when 3d
     // these are for tile options
     Tile* tile;
+
+    // TODO: use this to tell if we've chose a tile
+    bool chosenTile;
 };

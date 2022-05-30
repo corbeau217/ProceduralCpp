@@ -1,4 +1,7 @@
 #include "Cell.cpp"
+#include <iostream>
+
+using namespace std;
 
 
 
@@ -38,6 +41,7 @@ class Lattice{
         for(int idx = 0; idx < colCount; idx++)
             // each Cell* is rowCount of Cell*
             cells[idx] = new Cell*[rowCount];
+        builtGrid = false;
     }
 
     // destructor
@@ -76,32 +80,6 @@ class Lattice{
         return nullptr;
     }
     
-    /**
-     * @brief collapse at location, return if we need to propagate
-     * 
-     * @param xIdx : the index of x to collapse
-     * @param yIdx : the index of y to collapse
-     * @return true : changed the cell and need to propagate
-     * @return false : no change/error
-     */
-    bool collapse(int xIdx, int yIdx){
-        // TODO
-        return false;
-    }
-    
-    /**
-     * @brief propagate changes to a cell
-     * 
-     * @param xIdx : the index of x to propagate
-     * @param yIdx : the index of y to propagate
-     * @return true : if there was a change in entropy of any cell
-     * @return false : if no change to entropy of any cell
-     */
-    bool propagate(int xIdx, int yIdx){
-        //TODO 
-        return false;
-    }
-
     /**
      * @brief returns if there's any superposition cells
      * 
@@ -211,7 +189,6 @@ class Lattice{
         return lowestEntropyList[Randoming::getRandom(lowestEntropyCount)];
     }
 
-
     /**
      * @brief returns index change in direction
      * 
@@ -280,11 +257,102 @@ class Lattice{
     }
     
     /**
+     * @brief collapse at location, return if we need to propagate
+     * 
+     * @param xIdx : the index of x to collapse
+     * @param yIdx : the index of y to collapse
+     * @return true : changed the cell and need to propagate
+     *          TODO: improvement can be made by testing if adjacent cells are affected by change
+     * @return false : no change/error
+     * 
+     * PRE: get(xIdx,yIdx) cell is valid and has entropy
+     * POST: we've run a collapse function on the cell
+     */
+    bool collapse(int xIdx, int yIdx){
+        // run collapse on specified cell
+        return get(xIdx,yIdx)->collapse();
+    }
+    
+    /**
+     * @brief propagate changes to a cell
+     * 
+     * @param xIdx : the index of x to propagate
+     * @param yIdx : the index of y to propagate
+     * @return true : if there was a change in entropy of any cell
+     * @return false : if no change to entropy of any cell
+     * 
+     * PRE: propagation is required because collapse changed something
+     * 
+     * TODO: after changing adjacent cells, we should check the cells adjacent to
+     *      those for if they no longer have adjacent options required for some
+     *      of their options (like if sand isnt possible at the adjacent cells, take out
+     *      water as an option for cell in question)
+     */
+    bool propagate(int xIdx, int yIdx){
+        // reference to updated cell's tile
+        Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
+        // grab the adjacency list of the cell
+        Cell **adjacencyArray = getAdjacencyArray(xIdx,yIdx);
+        // bool to handle return at the end
+        bool changedAnyEntropy = false;
+        // run through the adjacent cells
+        for(int i = 0; i < 8; i++){
+            Cell *currCell = adjacencyArray[i];
+            // check not nullptr cell in adjacency
+            if(currCell!=nullptr){
+                // check if propagating has change
+                if(currCell->propagateNearbyTile(updatedCellTile))
+                    changedAnyEntropy=true;
+            }
+        }
+        // done return our tracking bool
+        return changedAnyEntropy;
+    }
+
+    /**
+     * @brief handles collapsing the next cell
+     * 
+     * PRE: somewhere in the lattice we have entropy
+     * POST: handled a collapse and any needed propagation for the collapse
+     * 
+     */
+    void collapseNext(){
+        // nominate a cell by grabbing lowest entropy cell at random
+        Cell *nominatedCell = getLowestEntropyCell();
+        int x = nominatedCell->getCol();
+        int y = nominatedCell->getRow();
+        // check if collapsing has an update
+        if(collapse(x,y))
+            propagate(x,y);
+        else
+            cout << "collapse didn't need to propagate" << endl;
+    }
+    
+    /**
+     * @brief loops until all cells collapsed
+     *          handing off to `collapseNext()`
+     *          for each iteration
+     */
+    void buildLattice(){
+        // collapse all cells till none left with entropy
+        while(hasEntropy())
+            collapseNext();
+        // tell everyone we're done building
+        builtGrid = true;
+    }
+
+    /**
      * @brief paints a frame of lattice
      * 
      */
     void paint(){
-        //TODO
+        // build grid if needed
+        if(!builtGrid)
+            buildLattice();
+        // paint the cells
+        for(int x = 0; x<colCount; x++)
+            for(int y = 0; y < rowCount; y++)
+                get(x,y)->paint();
     }
 
     private:
@@ -295,4 +363,5 @@ class Lattice{
     int colCount;
     int rowCount;
     int cellSize;
+    bool builtGrid;
 };
