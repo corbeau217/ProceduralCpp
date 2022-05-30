@@ -1,11 +1,20 @@
 #include "Tile.cpp"
 
+
+/**
+ * @brief this is the cell that goes into lattice
+ * 
+ * 
+ * TODO: need to find a way to say an empty cell for "nulls"
+ *          maybe just have a bool that's called like "isInLattice"
+ * 
+ */
 class Cell {
     public:
     // constructor
-    // Cell(){
-    //     // default constructor, we get junked later anyway
-    // }
+    Cell(){
+        // TODO : default constructor
+    }
     Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
             x = xIn;
             y = yIn;
@@ -27,7 +36,46 @@ class Cell {
         //TODO
     }
 
-    
+    /**
+     * @brief : choose random option available out of the tile options
+     * 
+     * @return true : if there was any change that would need propagation
+     * @return false : no change due to error or due to no need
+     */
+    bool collapseOptions(){
+        //TODO
+        return false;
+    }
+
+    /**
+     * @brief check if there's any options for this cell
+     * 
+     * @return true : there's at least one option this cell can choose
+     * @return false : if no options / already collapsed this cell
+     */
+    bool hasOptions(){
+        // TODO
+        return false;
+    }
+
+    /**
+     * @brief Set the Tile object
+     * 
+     * @param t : tile object
+     */
+    void setTile(Tile *t){
+        // TODO
+    }
+
+    /**
+     * @brief returns how many options this cell has
+     * 
+     * @return int : -1 if already set, otherwise returns the option count
+     */
+    int getEntropy(){
+        //TODO
+        return 0;
+    }
 
 
 
