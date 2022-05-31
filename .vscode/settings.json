@@ -7,5 +7,10 @@
 		"**/.DS_Store": true,
 		"**/*.o": true,
 		"**/*.exe": true,
+		"**/*.md": true,
+	},
+	"files.associations": {
+		"__tuple": "cpp",
+		"array": "cpp"
 	}
 }

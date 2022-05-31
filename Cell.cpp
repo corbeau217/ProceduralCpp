@@ -1,7 +1,41 @@
 #include "Tile.cpp"
+#include <time.h>
+#include <iostream>
+
+using namespace std;
 
 
 #define TILEOPTIONCOUNT 5
+
+
+
+
+class RandomSeeder{
+    public:
+    static unsigned int seed;
+    
+    /**
+     * @brief sets up our randomizing agent with a seed
+     * 
+     */
+    static void setup(){
+        cout << "--> [Setting up]: RandomSeeder::setup()" << endl;
+        // seed = time(NULL);
+        // srand(seed);
+        srand(time(NULL));
+    }
+
+    /**
+     * @brief Get random number within bounding
+     * 
+     * @param bounding : return is less than this value
+     * @return int : value between 0 and bounding
+     */
+    static int getRandom(int bounding){
+        return rand() % bounding;
+    }
+    
+};
 
 /**
  * @brief this is the cell that goes into lattice
@@ -155,7 +189,7 @@ class Cell {
         if(optionCount<1) // no options return false
             return false;
         // otherwise we choose an option randomly
-        int randomExistingOption = Randoming::getRandom(optionCount);
+        int randomExistingOption = RandomSeeder::getRandom(optionCount);
         // loop through our options to find the one we chose
         for(int i = 0, k = 0; i < TILEOPTIONCOUNT; i++){
             // check is valid option
@@ -177,7 +211,7 @@ class Cell {
      * 
      */
     void paint(){
-        Color *tileColor;
+        Color *tileColor = nullptr;
         // try get tile color
         if(chosenTile())
             tileColor = tile->getColor();
@@ -195,7 +229,14 @@ class Cell {
      * @brief static handle for cell
      * 
      */
-    static void CellMain(){
+    static void cellMain(){
+        cout << "--> [Setting up]: Cell::cellMain()" << endl;
+
+        // setup RandomSeeder
+        cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
+        RandomSeeder::setup();
+        // setup tile options
+        cout << "--> [Hand off]: going to Tile::setupTileOptions()" << endl;
         Tile::setupTileOptions();
     }
 
@@ -219,3 +260,5 @@ class Cell {
     // keep track of what tiles we can be
     bool* canBeTile;
 };
+
+

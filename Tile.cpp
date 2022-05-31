@@ -1,13 +1,15 @@
 #include "raylib.h"
+#include <iostream>
 
+using namespace std;
 
 #define TILEOPTIONS 5
 
-#define GRASS 0
-#define SAND 1
-#define WATER 2
-#define DEEPWATR 3
-#define FOREST 4
+#define TILEIDX_GRASS 0
+#define TILEIDX_SAND 1
+#define TILEIDX_WATER 2
+#define TILEIDX_OCEAN 3
+#define TILEIDX_FOREST 4
 
 /**
  * @brief this is the tiles that we can use
@@ -18,18 +20,25 @@ class Tile{
     public:
     int tileIdx;
 
+
     //constructor
-    Tile(char *nameIn) {
+    // Tile(){
+    //     tileIdx = -1;
+    //     tileName = "Tile";
+    //     canBeNearTile = new bool[TILEOPTIONS];
+    //     setColor(WHITE);
+    // }
+    Tile(const char *nameIn) {
         tileIdx = -1;
         tileName = nameIn;
-        canBeNearTile = new bool[TILEOPTIONS];
-        setColor(WHITE);
+        // canBeNearTile = new bool[TILEOPTIONS];
+        // setColor(WHITE);
     }
-    Tile(char *nameIn, Color colorIn) {
+    Tile(const char *nameIn, Color colorIn) {
         tileIdx = -1;
         tileName = nameIn;
-        canBeNearTile = new bool[TILEOPTIONS];
-        setColor(colorIn);
+        // canBeNearTile = new bool[TILEOPTIONS];
+        // setColor(colorIn);
     }
     //destructor
     ~Tile(){
@@ -70,7 +79,7 @@ class Tile{
      * PRE: t was setup with valid tile index
      */
     bool canBeNear(Tile *t){
-        canBeNear(t->getTileIdx());
+        return canBeNear(t->getTileIdx());
     }
 
     Tile *setDisallowsAdjacency(int idx){
@@ -84,8 +93,7 @@ class Tile{
      * PRE: t was setup with valid tile index
      */
     Tile *setDisallowsAdjacency(Tile *t){
-        setDisallowsAdjacency(t->getTileIdx());
-        return this;
+        return setDisallowsAdjacency(t->getTileIdx());
     }
 
     /**
@@ -119,28 +127,54 @@ class Tile{
      * 
      */
     static void setupTileOptions(){
-        tileOptions = new Tile*[TILEOPTIONS];
+        // tell the client we're doing the tiles
+        cout << "--> [Setting up]: Tile::setupTileOptions()" << endl;
 
-        // grass
-        tileOptions[GRASS] = new Tile("Grass",GREEN);
-        tileOptions[GRASS]->setTileIdx(GRASS)->setDisallowsAdjacency(DEEPWATR);
+        cout << "--> [Creating]: tileOptions array" << endl;
+        // tileOptions = new Tile*[TILEOPTIONS];
 
-        // sand
-        tileOptions[SAND] = new Tile("Sand",YELLOW);
-        tileOptions[SAND]->setTileIdx(SAND)->setDisallowsAdjacency(DEEPWATR)->setDisallowsAdjacency(FOREST);
+        // // Grass
+        // cout << "--> [Building]: Grass" << endl;
+        // tileOptions[TILEIDX_GRASS] = new Tile("Grass",GREEN);
+        // tileOptions[TILEIDX_GRASS]
+        //         ->setTileIdx( TILEIDX_GRASS )
+        //         ->setDisallowsAdjacency( TILEIDX_OCEAN  );
 
-        // water
-        tileOptions[WATER] = new Tile("Water",BLUE);
-        tileOptions[WATER]->setTileIdx(WATER)->setDisallowsAdjacency(GRASS)->setDisallowsAdjacency(FOREST);
+        // // Sand
+        // cout << "--> [Building]: Sand" << endl;
+        // tileOptions[TILEIDX_SAND] = new Tile("Sand",YELLOW);
+        // tileOptions[TILEIDX_SAND]
+        //         ->setTileIdx( TILEIDX_SAND )
+        //         ->setDisallowsAdjacency( TILEIDX_OCEAN  )
+        //         ->setDisallowsAdjacency( TILEIDX_FOREST );
 
-        // deep water
-        tileOptions[DEEPWATR] = new Tile("Deep Water",DARKBLUE);
-        tileOptions[DEEPWATR]->setTileIdx(DEEPWATR)->setDisallowsAdjacency(GRASS)->setDisallowsAdjacency(SAND)->setDisallowsAdjacency(FOREST);
+        // // Water
+        // cout << "--> [Building]: Water" << endl;
+        // tileOptions[TILEIDX_WATER] = new Tile("Water",BLUE);
+        // tileOptions[TILEIDX_WATER]
+        //         ->setTileIdx( TILEIDX_WATER )
+        //         ->setDisallowsAdjacency( TILEIDX_GRASS  )
+        //         ->setDisallowsAdjacency( TILEIDX_FOREST );
 
-        // forest
-        tileOptions[FOREST] = new Tile("Forest",DARKGREEN);
-        tileOptions[FOREST]->setTileIdx(FOREST)->setDisallowsAdjacency(SAND)->setDisallowsAdjacency(WATER)->setDisallowsAdjacency(DEEPWATR);
+        // // Ocean
+        // cout << "--> [Building]: Ocean" << endl;
+        // tileOptions[TILEIDX_OCEAN] = new Tile("Ocean",DARKBLUE);
+        // tileOptions[TILEIDX_OCEAN]
+        //         ->setTileIdx( TILEIDX_OCEAN )
+        //         ->setDisallowsAdjacency( TILEIDX_GRASS  )
+        //         ->setDisallowsAdjacency( TILEIDX_SAND   )
+        //         ->setDisallowsAdjacency( TILEIDX_FOREST );
 
+        // // Forest
+        // cout << "--> [Building]: Forest" << endl;
+        // tileOptions[TILEIDX_FOREST] = new Tile("Forest",DARKGREEN);
+        // tileOptions[TILEIDX_FOREST]
+        //         ->setTileIdx( TILEIDX_FOREST )
+        //         ->setDisallowsAdjacency( TILEIDX_SAND   )
+        //         ->setDisallowsAdjacency( TILEIDX_WATER  )
+        //         ->setDisallowsAdjacency( TILEIDX_OCEAN  );
+
+        // cout << "--> Done building tiles" << endl;
     }
 
     /**
@@ -157,7 +191,7 @@ class Tile{
 
     private:
     bool *canBeNearTile;
-    char *tileName;
+    const char *tileName;
     Color *tileColor;
 
     static Tile **tileOptions;

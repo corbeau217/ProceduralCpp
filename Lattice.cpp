@@ -1,35 +1,12 @@
 #include "Cell.cpp"
 #include <iostream>
-#include <time.h>
 
 using namespace std;
 
 
 #define TILEOPTIONS 5
 
-class Randoming{
-    public:
-    /**
-     * @brief sets up our randomizing agent with a seed
-     * 
-     */
-    static void setup(){
-        seed = time(0);
-        srand(seed);
-    }
 
-    /**
-     * @brief Get random number within bounding
-     * 
-     * @param bounding : return is less than this value
-     * @return int : value between 0 and bounding
-     */
-    static int getRandom(int bounding){
-        return rand() % bounding;
-    }
-    
-    static unsigned int seed;
-};
 
 #define ADJACENT_LIST_SIZE 8
 
@@ -41,6 +18,7 @@ class Lattice{
     public:
     // constructor
     Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn) {
+        cout << "--> [setting up]: Lattice object" << endl;
 
         xPos = xLoc;
         yPos = yLoc;
@@ -48,14 +26,17 @@ class Lattice{
         rowCount = rowCountIn;
         cellSize = cellSizeIn;
         // have a colCount length array of Cell** 
+        cout << "--> [Generating]: cells pointer array" << endl;
         cells = new Cell**[colCount];
         for(int idx = 0; idx < colCount; idx++)
             // each Cell* is rowCount of Cell*
             cells[idx] = new Cell*[rowCount];
         builtGrid = false;
-        
-        Cell::CellMain();
-        
+
+        //TODO : need to setup the cells
+
+        cout << "--> [Hand off]: going to Cell::cellMain()" << endl;
+        Cell::cellMain();
     }
 
     // destructor
@@ -201,7 +182,7 @@ class Lattice{
         int lowestEntropyCount = getLowestEntropyCount();
         Cell **lowestEntropyList = getLowestEntropyList();
         // choose a random option and return
-        return lowestEntropyList[Randoming::getRandom(lowestEntropyCount)];
+        return lowestEntropyList[RandomSeeder::getRandom(lowestEntropyCount)];
     }
 
     /**
@@ -349,11 +330,13 @@ class Lattice{
      *          for each iteration
      */
     void buildLattice(){
+        cout << "--> Running: Lattice::buildLattice()" << endl;
         // collapse all cells till none left with entropy
         while(hasEntropy())
             collapseNext();
         // tell everyone we're done building
         builtGrid = true;
+        cout << "--> Done building lattice" << endl;
     }
 
     /**

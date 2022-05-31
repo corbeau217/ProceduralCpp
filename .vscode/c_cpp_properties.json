@@ -21,8 +21,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/opt/homebrew/include"
+                "${workspaceFolder}/**" /*,
+                "/opt/homebrew/include" */ // removing because it just errors
             ],
             "defines": [
                 "_DEBUG",

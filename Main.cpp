@@ -1,8 +1,10 @@
 #include "raylib.h"
 #include "Lattice.cpp"
-//#include <iostream>
+#include <iostream>
 
+using namespace std;
 
+#define FRAMERATE 15
 
 int appWidth;
 int appHeight;
@@ -18,8 +20,7 @@ int getHeight(){
 }
 
 void setupApp(){
-    // setup randoming
-    Randoming::setup();
+    cout << "--> Setting up app" << endl;
     // setup our ammounts
     leftMargin = 15;
     topMargin = 15;
@@ -30,17 +31,19 @@ void setupApp(){
     appWidth = leftMargin*2 + cellSize*colCount;
     appHeight = topMargin*2 + cellSize*rowCount;
     // setup the grid
-    *grid = {leftMargin,topMargin,colCount,rowCount,cellSize};
+    grid = new Lattice(leftMargin,topMargin,colCount,rowCount,cellSize);
 
     InitWindow( getWidth(), getHeight(), "Procedural C++");
+    SetTargetFPS( FRAMERATE );
 }
 
 void framePaint(){
     ClearBackground(GRAY);
-    grid->paint();
+    // grid->paint();
 }
 
 void drawLoop(){
+    cout << "--> Starting Main::drawLoop()" << endl;
     // handles the draw loop
     while( !WindowShouldClose() ){
         BeginDrawing();
@@ -50,11 +53,16 @@ void drawLoop(){
 }
 
 void cleanupApp(){
+    cout << "Cleaning up app" << endl;
     //TODO
+    cout << "[nothing to report in cleanup lel]" << endl
+            << "[slap a TODO here]"                 << endl;
 }
 
 int main(){// main landing point
+    cout << "--> Executing Main::main()" << endl;
     setupApp();
     drawLoop();
     cleanupApp();
+    return 0;
 }

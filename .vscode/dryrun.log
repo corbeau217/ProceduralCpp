@@ -1,0 +1,13 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/auroragriffith/cplusplus/raylib/ProceduralCpp/ProceduralCpp'
+make game
+ 
+make[1]: Entering directory `/Users/auroragriffith/cplusplus/raylib/ProceduralCpp/ProceduralCpp'
+ 
+make[1]: Leaving directory `/Users/auroragriffith/cplusplus/raylib/ProceduralCpp/ProceduralCpp'
+ 
+make[1]: *** No rule to make target `main.c', needed by `game'.
+make: *** [all] Error 2
+
+make: Leaving directory `/Users/auroragriffith/cplusplus/raylib/ProceduralCpp/ProceduralCpp'
+ 
