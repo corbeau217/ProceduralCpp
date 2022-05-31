@@ -9,11 +9,6 @@ namespace tilespc{
 
     #define TILEOPTIONS 5
 
-    #define TILEIDX_GRASS 0
-    #define TILEIDX_SAND 1
-    #define TILEIDX_WATER 2
-    #define TILEIDX_OCEAN 3
-    #define TILEIDX_FOREST 4
 
     /**
      * @brief this is the tiles that we can use
@@ -142,6 +137,12 @@ namespace tilespc{
 
     // ===================================================
     
+    #define TILEIDX_GRASS 0
+    #define TILEIDX_SAND 1
+    #define TILEIDX_WATER 2
+    #define TILEIDX_OCEAN 3
+    #define TILEIDX_FOREST 4
+
     /**
      * @brief sets up the tile options
      * 
@@ -155,14 +156,15 @@ namespace tilespc{
 
         // Grass
         cout << "--> [Building]: Grass" << endl;
-        tileOptions[TILEIDX_GRASS] = new Tile("Grass",GREEN);
+        // tileColor = new Color(0x74b72e);
+        tileOptions[TILEIDX_GRASS] = new Tile("Grass", (Color){65,169,76,255});
         tileOptions[TILEIDX_GRASS]
                 ->setTileIdx( TILEIDX_GRASS )
                 ->setDisallowsAdjacency( TILEIDX_OCEAN  );
 
         // Sand
         cout << "--> [Building]: Sand" << endl;
-        tileOptions[TILEIDX_SAND] = new Tile("Sand",YELLOW);
+        tileOptions[TILEIDX_SAND] = new Tile("Sand",(Color){255,255,153,255});
         tileOptions[TILEIDX_SAND]
                 ->setTileIdx( TILEIDX_SAND )
                 ->setDisallowsAdjacency( TILEIDX_OCEAN  )
@@ -170,7 +172,7 @@ namespace tilespc{
 
         // Water
         cout << "--> [Building]: Water" << endl;
-        tileOptions[TILEIDX_WATER] = new Tile("Water",BLUE);
+        tileOptions[TILEIDX_WATER] = new Tile("Water",(Color){115,215,255,255});
         tileOptions[TILEIDX_WATER]
                 ->setTileIdx( TILEIDX_WATER )
                 ->setDisallowsAdjacency( TILEIDX_GRASS  )
@@ -178,7 +180,7 @@ namespace tilespc{
 
         // Ocean
         cout << "--> [Building]: Ocean" << endl;
-        tileOptions[TILEIDX_OCEAN] = new Tile("Ocean",DARKBLUE);
+        tileOptions[TILEIDX_OCEAN] = new Tile("Ocean",(Color){30,144,255,255});
         tileOptions[TILEIDX_OCEAN]
                 ->setTileIdx( TILEIDX_OCEAN )
                 ->setDisallowsAdjacency( TILEIDX_GRASS  )
@@ -187,7 +189,7 @@ namespace tilespc{
 
         // Forest
         cout << "--> [Building]: Forest" << endl;
-        tileOptions[TILEIDX_FOREST] = new Tile("Forest",DARKGREEN);
+        tileOptions[TILEIDX_FOREST] = new Tile("Forest",(Color){0,82,33,255});
         tileOptions[TILEIDX_FOREST]
                 ->setTileIdx( TILEIDX_FOREST )
                 ->setDisallowsAdjacency( TILEIDX_SAND   )

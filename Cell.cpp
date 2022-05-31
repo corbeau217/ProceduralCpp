@@ -238,7 +238,7 @@ class Cell {
         // draw fill
         DrawRectangle(xPos,yPos,width,height,tileColor);
         // draw outline
-        DrawRectangleLines(xPos,yPos,width,height,BLACK);
+        DrawRectangleLines(xPos,yPos,width,height,(Color){20,20,20,255});
     }
 
 
