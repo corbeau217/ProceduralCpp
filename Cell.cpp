@@ -1,27 +1,38 @@
 #include "Tile.cpp"
 #include <time.h>
 #include <iostream>
+#include <chrono>
 
 using namespace std;
 
 #define TILEOPTIONCOUNT 5
+
+#define CURRENTSEED 0
 
 
 
 
 class RandomSeeder{
     public:
-    static unsigned int seed;
+    static const long int currSeed = CURRENTSEED;
     
     /**
      * @brief sets up our randomizing agent with a seed
      * 
+     * meant to let us use the same seed again but it doesnt work vry sad
+     * 
      */
     static void setup(){
         cout << "--> [Setting up]: RandomSeeder::setup()" << endl;
-        // seed = time(NULL);
-        // srand(seed);
-        srand(time(NULL));
+        long int seed;
+        if(currSeed==0)
+            seed = (long int)time(NULL);
+        else
+            seed = currSeed;
+        cout << "|| SEED ||  " << seed << "  || (doesn't do much rn)" << endl;
+        srand(seed);
+
+        // srand(time(NULL));
     }
 
     /**
