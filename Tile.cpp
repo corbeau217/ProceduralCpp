@@ -134,6 +134,7 @@ namespace tilespc{
 
 
     static Tile **tileOptions;
+    static int tileOptionsCount;
 
     // ===================================================
     
@@ -142,6 +143,7 @@ namespace tilespc{
      * 
      */
     static void setupTileOptions(){
+        tileOptionsCount = TILEOPTIONS;
         // tell the client we're doing the tiles
         cout << "--> [Setting up]: Tile::setupTileOptions()" << endl;
 

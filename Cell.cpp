@@ -31,7 +31,10 @@ class RandomSeeder{
      * @return int : value between 0 and bounding
      */
     static int getRandom(int bounding){
-        return rand() % bounding;
+        if(bounding == 0)
+            return 0;
+        int result = rand() % bounding;
+        return result;
     }
     
 };
@@ -62,8 +65,8 @@ class Cell {
             height = sIn;
             col = colIn;
             row = rowIn;
-            canBeTile = new bool[TILEOPTIONCOUNT];
-            for(int i = 0; i < TILEOPTIONCOUNT; i++)
+            canBeTile = new bool[tilespc::tileOptionsCount];
+            for(int i = 0; i < tilespc::tileOptionsCount; i++)
                 canBeTile[i] = true;
             tile = nullptr;
         }
@@ -75,8 +78,8 @@ class Cell {
             height = hIn;
             col = colIn;
             row = rowIn;
-            canBeTile = new bool[TILEOPTIONCOUNT];
-            for(int i = 0; i < TILEOPTIONCOUNT; i++)
+            canBeTile = new bool[tilespc::tileOptionsCount];
+            for(int i = 0; i < tilespc::tileOptionsCount; i++)
                 canBeTile[i] = true;
             tile = nullptr;
     }
@@ -95,26 +98,6 @@ class Cell {
     }
 
     /**
-     * @brief returns how many options this cell has
-     * 
-     * @return int : -1 if already set, otherwise returns the option count
-     * 
-     * TODO: check if this behaves correctly with empty tile reference, might need null tiles
-     */
-    int getEntropy(){
-        if(tileSet)
-            return -1;
-        int counter = 0;
-        for(int i = 0; i < TILEOPTIONCOUNT; i++)
-            if(canBeTile[i])
-                ++counter;
-        return counter;
-    }
-    bool hasEntropy(){
-        return getEntropy()>-1;
-    }
-
-    /**
      * @brief checks if we've chosen a tile
      * 
      * @return true : no entropy
@@ -122,6 +105,26 @@ class Cell {
      */
     bool chosenTile(){
         return tileSet;
+    }
+
+    /**
+     * @brief returns how many options this cell has
+     * 
+     * @return int : -1 if already set, otherwise returns the option count
+     * 
+     * TODO: check if this behaves correctly with empty tile reference, might need null tiles
+     */
+    int getEntropy(){
+        if(chosenTile())
+            return -1;
+        int counter = 0;
+        for(int i = 0; i < tilespc::tileOptionsCount; i++)
+            if(canBeTile[i])
+                ++counter;
+        return counter;
+    }
+    bool hasEntropy(){
+        return !chosenTile() && getEntropy()>-1;
     }
 
     /**
@@ -142,7 +145,7 @@ class Cell {
      */
     void setTile(tilespc::Tile *t){
         tile = t;
-        for(int i = 0; i < TILEOPTIONCOUNT; i++)
+        for(int i = 0; i < tilespc::tileOptionsCount; i++)
             canBeTile[i] = false;
         tileSet = true;
     }
@@ -169,7 +172,7 @@ class Cell {
     bool propagateNearbyTile(tilespc::Tile *t){
         bool didWeModify = false;
         // loop through all tile options
-        for(int i = 0; i < TILEOPTIONCOUNT; i++){
+        for(int i = 0; i < tilespc::tileOptionsCount; i++){
             if(canBeTile[i]){
                 //store if we can be near
                 canBeTile[i] = tilespc::getTileOption(i)->canBeNear(t);
@@ -195,7 +198,7 @@ class Cell {
         // otherwise we choose an option randomly
         int randomExistingOption = RandomSeeder::getRandom(optionCount);
         // loop through our options to find the one we chose
-        for(int i = 0, k = 0; i < TILEOPTIONCOUNT; i++){
+        for(int i = 0, k = 0; i < tilespc::tileOptionsCount; i++){
             // check is valid option
             if(canBeTile[i]){
                 // check random number
@@ -258,9 +261,9 @@ class Cell {
     // lattice variables
     int col;
     int row;
-    //int layer; //would be used when 3d
-    // these are for tile options
+    // these are for tile option
     tilespc::Tile* tile;
+    // keeps track of whether we've set this to have a tile yet
     bool tileSet;
     // keep track of what tiles we can be
     bool* canBeTile;

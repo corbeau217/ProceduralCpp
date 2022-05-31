@@ -24,6 +24,8 @@ class Lattice{
         yPos = yLoc;
         colCount = colCountIn;
         rowCount = rowCountIn;
+        totalCells = colCount*rowCount;
+        filledCells = 0;
         cellSize = cellSizeIn;
         // have a colCount length array of Cell** 
         cout << "--> [Generating]: cells pointer array" << endl;
@@ -90,7 +92,7 @@ class Lattice{
     }
     
     /**
-     * @brief returns if there's any superposition cells
+     * @brief returns if there's any entropy in the lattice
      * 
      * @return true : if any cell has entropy
      * @return false : otherwise
@@ -114,7 +116,7 @@ class Lattice{
      */
     int getLowestEntropy(){
         // start with highest possible
-        int lowestEntropy = TILEOPTIONS;
+        int lowestEntropy = tilespc::tileOptionsCount;
         // loop through and check for something lower
         for(int x = 0; x < colCount; x++){
             for(int y = 0; y < rowCount; y++){
@@ -167,6 +169,8 @@ class Lattice{
         int lowestEntropy = getLowestEntropy();
         // to know how many we need to mess with
         int lowestEntropyCount = getHasEntropyCount(lowestEntropy);
+        // handle errors before we cry
+        if(lowestEntropyCount == 0) return nullptr;
         // TODO : needs to move into own class
         Cell **outList = new Cell*[lowestEntropyCount];
         // keep track of our current place in the array
@@ -330,11 +334,16 @@ class Lattice{
         Cell *nominatedCell = getLowestEntropyCell();
         int x = nominatedCell->getCol();
         int y = nominatedCell->getRow();
-        // check if collapsing has an update
-        if(collapse(x,y))
-            propagate(x,y);
-        else
-            cout << "collapse didn't need to propagate" << endl;
+        // // check if collapsing has an update
+        // if(collapse(x,y)){
+        //     ++filledCells;
+        //     propagate(x,y);
+        // }
+        // else
+        //     cout << "collapse didn't need to propagate" << endl;
+        collapse(x,y);
+        ++filledCells;
+        propagate(x,y);
     }
     
     /**
@@ -343,10 +352,13 @@ class Lattice{
      *          for each iteration
      */
     void buildLattice(){
-        cout << "--> Running: Lattice::buildLattice()" << endl;
+        cout << "--> [Running]: Lattice::buildLattice()" << endl;
         // collapse all cells till none left with entropy
-        while(hasEntropy())
+        while(hasEntropy()){
+            // use this to keep track of how many are done
+            cout << "|| Cells filled: || " << filledCells << '/' << totalCells << endl;
             collapseNext();
+        }
         // tell everyone we're done building
         builtGrid = true;
         cout << "--> Done building lattice" << endl;
@@ -358,8 +370,8 @@ class Lattice{
      */
     void paint(){
         // build grid if needed
-        // if(!builtGrid)
-        //     buildLattice();
+        if(!builtGrid)
+            buildLattice();
         // paint the cells
         for(int x = 0; x<colCount; x++)
             for(int y = 0; y < rowCount; y++)
@@ -375,4 +387,6 @@ class Lattice{
     int rowCount;
     int cellSize;
     bool builtGrid;
+    int totalCells;
+    int filledCells;
 };
