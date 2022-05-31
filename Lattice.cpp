@@ -136,16 +136,16 @@ class Lattice{
      */
     int getHasEntropyCount(int entropyVal){
         // counter for total matching
-        int totalLowest = 0;
+        int totalOfEntropyAtVal = 0;
         // loop through and check
         for(int x = 0; x < colCount; x++){
             for(int y = 0; y < rowCount; y++){
                 int currCellEntropy = get(x,y)->getEntropy();
-                if(currCellEntropy<entropyVal)
-                    ++totalLowest;
+                if(currCellEntropy==entropyVal)
+                    ++totalOfEntropyAtVal;
             }
         }
-        return totalLowest;
+        return totalOfEntropyAtVal;
     }
 
     /**
