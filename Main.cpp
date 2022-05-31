@@ -6,6 +6,23 @@ using namespace std;
 
 #define FRAMERATE 15
 
+/**
+ * @brief main app code
+ * 
+ * 
+ * 
+ * TODO: need to change the generation code to be procedurally doing sections at a time
+ *         using that idea of biomes etc from before
+ * 
+ * 
+ * 
+ * TODO: (after) setup weights for allowed adjacency rather than boolean values
+ * 
+ * 
+ * 
+ */
+
+
 int appWidth;
 int appHeight;
 int leftMargin;
