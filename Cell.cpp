@@ -55,6 +55,7 @@ class Cell {
     //     // TODO : default constructor
     // }
     Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
+            tileSet = false;
             xPos = xIn;
             yPos = yIn;
             width = sIn;
@@ -64,8 +65,10 @@ class Cell {
             canBeTile = new bool[TILEOPTIONCOUNT];
             for(int i = 0; i < TILEOPTIONCOUNT; i++)
                 canBeTile[i] = true;
+            tile = nullptr;
         }
     Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
+            tileSet = false;
             xPos = xIn;
             yPos = yIn;
             width = wIn;
@@ -75,6 +78,7 @@ class Cell {
             canBeTile = new bool[TILEOPTIONCOUNT];
             for(int i = 0; i < TILEOPTIONCOUNT; i++)
                 canBeTile[i] = true;
+            tile = nullptr;
     }
     // destructor
     ~Cell(){
@@ -98,7 +102,7 @@ class Cell {
      * TODO: check if this behaves correctly with empty tile reference, might need null tiles
      */
     int getEntropy(){
-        if(tile!=nullptr)
+        if(tileSet)
             return -1;
         int counter = 0;
         for(int i = 0; i < TILEOPTIONCOUNT; i++)
@@ -117,7 +121,7 @@ class Cell {
      * @return false : otherwise
      */
     bool chosenTile(){
-        return getEntropy()==-1;
+        return tileSet;
     }
 
     /**
@@ -140,6 +144,7 @@ class Cell {
         tile = t;
         for(int i = 0; i < TILEOPTIONCOUNT; i++)
             canBeTile[i] = false;
+        tileSet = true;
     }
 
     /**
@@ -210,14 +215,14 @@ class Cell {
      * 
      */
     void paint(){
-        Color *tileColor = nullptr;
+        Color tileColor;
         // try get tile color
         if(chosenTile())
-            tileColor = tile->getColor();
+            tileColor = *(tile->getColor());
         else
-            *tileColor = WHITE;
+            tileColor = WHITE;
         // draw fill
-        DrawRectangle(xPos,yPos,width,height,*tileColor);
+        DrawRectangle(xPos,yPos,width,height,tileColor);
         // draw outline
         DrawRectangleLines(xPos,yPos,width,height,BLACK);
     }
@@ -256,6 +261,7 @@ class Cell {
     //int layer; //would be used when 3d
     // these are for tile options
     tilespc::Tile* tile;
+    bool tileSet;
     // keep track of what tiles we can be
     bool* canBeTile;
 };

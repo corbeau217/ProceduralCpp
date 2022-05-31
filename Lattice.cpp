@@ -43,10 +43,8 @@ class Lattice{
                 // get our relative position
                 int cellXPos = xPos + x*cellSize;
                 int cellYPos = yPos + y*cellSize;
-                // get the cell we're working on
-                Cell *currCell = get(x,y);
                 // make the cell
-                currCell = { new Cell(cellXPos, cellYPos, cellSize, x, y) };
+                cells[x][y] = new Cell(cellXPos, cellYPos, cellSize, x, y);
             }
         }
 
@@ -360,8 +358,8 @@ class Lattice{
      */
     void paint(){
         // build grid if needed
-        if(!builtGrid)
-            buildLattice();
+        // if(!builtGrid)
+        //     buildLattice();
         // paint the cells
         for(int x = 0; x<colCount; x++)
             for(int y = 0; y < rowCount; y++)

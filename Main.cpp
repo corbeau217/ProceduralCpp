@@ -39,7 +39,7 @@ void setupApp(){
 
 void framePaint(){
     ClearBackground(GRAY);
-    // grid->paint();
+    grid->paint();
 }
 
 void drawLoop(){
