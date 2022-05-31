@@ -22,11 +22,11 @@ int getHeight(){
 void setupApp(){
     cout << "--> Setting up app" << endl;
     // setup our ammounts
-    leftMargin = 15;
-    topMargin = 15;
-    int colCount = 20;
-    int rowCount = 20;
-    int cellSize = 35;
+    leftMargin = 10;
+    topMargin = 10;
+    int colCount = 70;
+    int rowCount = 40;
+    int cellSize = 18;
     // this sets up the app
     appWidth = leftMargin*2 + cellSize*colCount;
     appHeight = topMargin*2 + cellSize*rowCount;

@@ -4,7 +4,7 @@
 using namespace std;
 
 
-#define TILEOPTIONS 5
+#define TILEOPTIONS 7
 
 
 

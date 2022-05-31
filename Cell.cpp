@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define TILEOPTIONCOUNT 5
+#define TILEOPTIONCOUNT 7
 
 #define CURRENTSEED 0
 
