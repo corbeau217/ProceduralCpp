@@ -36,13 +36,17 @@ namespace tilespc{
             tileIdx = -1;
             tileName = nameIn;
             canBeNearTile = new bool[TILEOPTIONS];
+            for(int i = 0; i < TILEOPTIONS; i++)
+                canBeNearTile[i] = true;
             tileColor = WHITE;
         }
         Tile(const char *nameIn, Color colorIn) {
             tileIdx = -1;
             tileName = nameIn;
             canBeNearTile = new bool[TILEOPTIONS];
-            setColor(colorIn);
+            for(int i = 0; i < TILEOPTIONS; i++)
+                canBeNearTile[i] = true;
+            tileColor = colorIn;
         }
         //destructor
         ~Tile(){
