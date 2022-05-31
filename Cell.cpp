@@ -124,7 +124,7 @@ class Cell {
         return counter;
     }
     bool hasEntropy(){
-        return !chosenTile() && getEntropy()>-1;
+        return !chosenTile() && getEntropy()>0;
     }
 
     /**

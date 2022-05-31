@@ -121,7 +121,8 @@ class Lattice{
         for(int x = 0; x < colCount; x++){
             for(int y = 0; y < rowCount; y++){
                 int currCellEntropy = get(x,y)->getEntropy();
-                if(currCellEntropy<lowestEntropy)
+                // only look for low entropy where we havent set the tile already
+                if(currCellEntropy<lowestEntropy && currCellEntropy>0)
                     lowestEntropy = currCellEntropy;
             }
         }
@@ -264,7 +265,7 @@ class Lattice{
             int x = dirX(i) + xIdx;
             int y = dirY(i) + yIdx;
             // get the cell and dump into array
-            *adjacencyArray = get(x,y);
+            adjacencyArray[i] = get(x,y);
         }
         return adjacencyArray;
     }
