@@ -28,12 +28,27 @@ class Lattice{
         // have a colCount length array of Cell** 
         cout << "--> [Generating]: cells pointer array" << endl;
         cells = new Cell**[colCount];
-        for(int idx = 0; idx < colCount; idx++)
+        for(int idx = 0; idx < colCount; idx++){
             // each Cell* is rowCount of Cell*
             cells[idx] = new Cell*[rowCount];
+            for(int idx2 = 0; idx2 < rowCount; idx2++)
+                cells[idx][idx2] = nullptr;
+        }
         builtGrid = false;
 
-        //TODO : need to setup the cells
+        cout << "--> [Generating]: cell objects" << endl;
+        // loop through our Cell pointers
+        for(int x = 0; x < colCount; x++){
+            for(int y = 0; y < rowCount; y++){
+                // get our relative position
+                int cellXPos = xPos + x*cellSize;
+                int cellYPos = yPos + y*cellSize;
+                // get the cell we're working on
+                Cell *currCell = get(x,y);
+                // make the cell
+                currCell = { new Cell(cellXPos, cellYPos, cellSize, x, y) };
+            }
+        }
 
         cout << "--> [Hand off]: going to Cell::cellMain()" << endl;
         Cell::cellMain();

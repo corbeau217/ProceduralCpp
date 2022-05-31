@@ -35,19 +35,18 @@ namespace tilespc{
         Tile(const char *nameIn) {
             tileIdx = -1;
             tileName = nameIn;
-            // canBeNearTile = new bool[TILEOPTIONS];
-            // setColor(WHITE);
+            canBeNearTile = new bool[TILEOPTIONS];
+            tileColor = WHITE;
         }
         Tile(const char *nameIn, Color colorIn) {
             tileIdx = -1;
             tileName = nameIn;
-            // canBeNearTile = new bool[TILEOPTIONS];
-            // setColor(colorIn);
+            canBeNearTile = new bool[TILEOPTIONS];
+            setColor(colorIn);
         }
         //destructor
         ~Tile(){
             delete canBeNearTile;
-            delete tileColor;
             delete tileName;
         }
 
@@ -108,7 +107,7 @@ namespace tilespc{
          * has builder pattern
          */
         Tile *setColor(Color c){
-            *tileColor = c;
+            tileColor = c;
             return this;
         }
 
@@ -119,7 +118,7 @@ namespace tilespc{
          * @return Color* : color of this tile
          */
         Color *getColor(){
-            return tileColor;
+            return &tileColor;
         }
 
 
@@ -129,7 +128,7 @@ namespace tilespc{
         private:
         bool *canBeNearTile;
         const char *tileName;
-        Color *tileColor;
+        Color tileColor;
 
     };
 
