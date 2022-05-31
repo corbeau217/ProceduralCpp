@@ -286,7 +286,7 @@ class Lattice{
      */
     bool propagate(int xIdx, int yIdx){
         // reference to updated cell's tile
-        Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
+        tilespc::Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
         // grab the adjacency list of the cell
         Cell **adjacencyArray = getAdjacencyArray(xIdx,yIdx);
         // bool to handle return at the end

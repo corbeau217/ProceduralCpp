@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 #define TILEOPTIONCOUNT 5
 
 
@@ -137,7 +136,7 @@ class Cell {
      * 
      * @param t : tile object
      */
-    void setTile(Tile *t){
+    void setTile(tilespc::Tile *t){
         tile = t;
         for(int i = 0; i < TILEOPTIONCOUNT; i++)
             canBeTile[i] = false;
@@ -148,7 +147,7 @@ class Cell {
      * 
      * @return Tile* : returns nullptr if still has entropy
      */
-    Tile *getTile(){
+    tilespc::Tile *getTile(){
         if(chosenTile())
             return tile;
         return nullptr;
@@ -162,13 +161,13 @@ class Cell {
      * @return true : if there was a change to this cell's options
      * @return false : otherwise
      */
-    bool propagateNearbyTile(Tile *t){
+    bool propagateNearbyTile(tilespc::Tile *t){
         bool didWeModify = false;
         // loop through all tile options
         for(int i = 0; i < TILEOPTIONCOUNT; i++){
             if(canBeTile[i]){
                 //store if we can be near
-                canBeTile[i] = Tile::getTileOption(i)->canBeNear(t);
+                canBeTile[i] = tilespc::getTileOption(i)->canBeNear(t);
                 if(!canBeTile[i])
                     // suddenly we cant, mark that there was an update
                     didWeModify = true;
@@ -197,7 +196,7 @@ class Cell {
                 // check random number
                 if(k==randomExistingOption){
                     //we found our option, collapse to this one
-                    setTile(Tile::getTileOption(i));
+                    setTile(tilespc::getTileOption(i));
                     return true;
                 }
                 ++k;
@@ -237,12 +236,12 @@ class Cell {
         RandomSeeder::setup();
         // setup tile options
         cout << "--> [Hand off]: going to Tile::setupTileOptions()" << endl;
-        Tile::setupTileOptions();
+        tilespc::setupTileOptions();
     }
 
     static void StaticCleanup(){
         //TODO: delete the static stuffs
-        Tile::staticCleanup();
+        tilespc::staticCleanup();
     }
 
     private:
@@ -256,7 +255,7 @@ class Cell {
     int row;
     //int layer; //would be used when 3d
     // these are for tile options
-    Tile* tile;
+    tilespc::Tile* tile;
     // keep track of what tiles we can be
     bool* canBeTile;
 };
