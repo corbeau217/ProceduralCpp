@@ -10,9 +10,6 @@
 using namespace std;
 
 
-#define TILEOPTIONS 7
-
-
 
 #define ADJACENT_LIST_SIZE 8
 
@@ -176,13 +173,6 @@ class Lattice{
      */
     void paint();
 
-
-    /**
-     * @brief interface to the static tile list for getting the tile count
-     * 
-     * @return int 
-     */
-    static int getTileOptionCount();
 
     static Tile *getTileOption(int idx);
 

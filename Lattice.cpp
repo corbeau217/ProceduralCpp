@@ -118,7 +118,7 @@ bool Lattice::hasEntropy(){
  */
 int Lattice::getLowestEntropy(){
     // start with highest possible
-    int lowestEntropy = Lattice::getTileOptionCount();
+    int lowestEntropy = TileList::getTotalTiles();
     // loop through and check for something lower
     for(int x = 0; x < colCount; x++){
         for(int y = 0; y < rowCount; y++){
@@ -379,15 +379,6 @@ void Lattice::paint(){
     for(int x = 0; x<colCount; x++)
         for(int y = 0; y < rowCount; y++)
             get(x,y)->paint();
-}
-
-/**
- * @brief interface to the static tile list for getting the tile count
- * 
- * @return int 
- */
-int Lattice::getTileOptionCount(){
-    return Lattice::tiles->getTotalTiles();
 }
 
 Tile *Lattice::getTileOption(int idx){

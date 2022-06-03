@@ -10,7 +10,7 @@ TileList::TileList(){
     cout << "--> [Setting up]: TileList" << endl;
 
     // set up variables
-    tileOptionsCount = TILEOPTIONS;
+    tileOptionsCount = TileList::getTotalTiles();
     totalAdded = 0;
     // setup pointers
     tileOptions = new Tile*[tileOptionsCount];
@@ -110,5 +110,5 @@ void TileList::addTileOption(Tile *t){
 }
 
 int TileList::getTotalTiles(){
-    return TILEOPTIONS;
+    return TILEOPTION_MAX;
 }

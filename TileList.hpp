@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define TILEOPTIONS 7
+#define TILEOPTION_MAX 7
 
 
 #define TILEIDX_GRASS 0
@@ -34,9 +34,8 @@ class TileList{
     Tile *getTileOption(int idx);
 
     void addTileOption(Tile *t);
-    
-    int getTotalTiles();
 
+    static int getTotalTiles();
 };
 
 #endif

@@ -1,11 +1,11 @@
 #include "raylib.h"
 #include "Tile.hpp"
+#include "TileList.hpp"
 #include <iostream>
 
 using namespace std;
 
 
-#define TILEOPTIONSEDED 7
 
 
 /**
@@ -20,16 +20,16 @@ using namespace std;
 Tile::Tile(const char *nameIn) {
     tileIdx = -1;
     tileName = nameIn;
-    canBeNearTile = new bool[TILEOPTIONSEDED];
-    for(int i = 0; i < TILEOPTIONSEDED; i++)
+    canBeNearTile = new bool[TileList::getTotalTiles()];
+    for(int i = 0; i < TileList::getTotalTiles(); i++)
         canBeNearTile[i] = true;
     tileColor = WHITE;
 }
 Tile::Tile(const char *nameIn, Color colorIn) {
     tileIdx = -1;
     tileName = nameIn;
-    canBeNearTile = new bool[TILEOPTIONSEDED];
-    for(int i = 0; i < TILEOPTIONSEDED; i++)
+    canBeNearTile = new bool[TileList::getTotalTiles()];
+    for(int i = 0; i < TileList::getTotalTiles(); i++)
         canBeNearTile[i] = true;
     tileColor = colorIn;
 }

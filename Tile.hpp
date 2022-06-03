@@ -8,7 +8,6 @@
 using namespace std;
 
 
-#define TILEOPTIONSEDED 7
 
 
 /**
