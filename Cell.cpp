@@ -109,7 +109,7 @@ bool Cell::hasOptions(){
  * 
  * @param t : tile object
  */
-void Cell::setTile(tilespc::Tile *t){
+void Cell::setTile(Tile *t){
     tile = t;
     for(int i = 0; i < tilespc::tileOptionsCount; i++)
         canBeTile[i] = false;
@@ -121,7 +121,7 @@ void Cell::setTile(tilespc::Tile *t){
  * 
  * @return Tile* : returns nullptr if still has entropy
  */
-tilespc::Tile *Cell::getTile(){
+Tile *Cell::getTile(){
     if(chosenTile())
         return tile;
     return nullptr;
@@ -135,7 +135,7 @@ tilespc::Tile *Cell::getTile(){
  * @return true : if there was a change to this cell's options
  * @return false : otherwise
  */
-bool Cell::propagateNearbyTile(tilespc::Tile *t){
+bool Cell::propagateNearbyTile(Tile *t){
     bool didWeModify = false;
     // loop through all tile options
     for(int i = 0; i < tilespc::tileOptionsCount; i++){

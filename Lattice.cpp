@@ -305,7 +305,7 @@ bool Lattice::collapse(int xIdx, int yIdx){
  */
 bool Lattice::propagate(int xIdx, int yIdx){
     // reference to updated cell's tile
-    tilespc::Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
+    Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
     // grab the adjacency list of the cell
     Cell **adjacencyArray = getAdjacencyArray(xIdx,yIdx);
     // bool to handle return at the end
