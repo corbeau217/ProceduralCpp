@@ -3,17 +3,6 @@
 
 using namespace std;
 
-#define TILEOPTIONS 7
-
-
-#define TILEIDX_GRASS 0
-#define TILEIDX_SAND 1
-#define TILEIDX_WATER 2
-#define TILEIDX_OCEAN 3
-#define TILEIDX_FOREST 4
-#define TILEIDX_DEEPOCEAN 5
-#define TILEIDX_PLAINS 6
-
 
 //constructor
 TileList::TileList(int total){

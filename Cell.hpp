@@ -3,7 +3,6 @@
 #define CELL_HPP
 
 #include "Tile.hpp"
-#include "tilespcer.cpp"
 #include <iostream>
 
 using namespace std;
