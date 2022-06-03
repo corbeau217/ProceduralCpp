@@ -182,7 +182,9 @@ class Lattice{
      * 
      * @return int 
      */
-    int getTileOptionCount();
+    static int getTileOptionCount();
+
+    static Tile *getTileOption(int idx);
 
     static void buildTileList();
 

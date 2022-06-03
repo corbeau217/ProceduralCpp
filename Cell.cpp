@@ -32,8 +32,8 @@ Cell::Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
         height = sIn;
         col = colIn;
         row = rowIn;
-        canBeTile = new bool[tilespc::tileOptionsCount];
-        for(int i = 0; i < tilespc::tileOptionsCount; i++)
+        canBeTile = new bool[Lattice::getTileOptionCount()];
+        for(int i = 0; i < Lattice::getTileOptionCount(); i++)
             canBeTile[i] = true;
         tile = nullptr;
     }
@@ -45,8 +45,8 @@ Cell::Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
         height = hIn;
         col = colIn;
         row = rowIn;
-        canBeTile = new bool[tilespc::tileOptionsCount];
-        for(int i = 0; i < tilespc::tileOptionsCount; i++)
+        canBeTile = new bool[Lattice::getTileOptionCount()];
+        for(int i = 0; i < Lattice::getTileOptionCount(); i++)
             canBeTile[i] = true;
         tile = nullptr;
 }
@@ -85,7 +85,7 @@ int Cell::getEntropy(){
     if(chosenTile())
         return -1;
     int counter = 0;
-    for(int i = 0; i < tilespc::tileOptionsCount; i++)
+    for(int i = 0; i < Lattice::getTileOptionCount(); i++)
         if(canBeTile[i])
             ++counter;
     return counter;
@@ -112,7 +112,7 @@ bool Cell::hasOptions(){
  */
 void Cell::setTile(Tile *t){
     tile = t;
-    for(int i = 0; i < tilespc::tileOptionsCount; i++)
+    for(int i = 0; i < Lattice::getTileOptionCount(); i++)
         canBeTile[i] = false;
     tileSet = true;
 }
@@ -139,10 +139,10 @@ Tile *Cell::getTile(){
 bool Cell::propagateNearbyTile(Tile *t){
     bool didWeModify = false;
     // loop through all tile options
-    for(int i = 0; i < tilespc::tileOptionsCount; i++){
+    for(int i = 0; i < Lattice::getTileOptionCount(); i++){
         if(canBeTile[i]){
             //store if we can be near
-            canBeTile[i] = tilespc::getTileOption(i)->canBeNear(t);
+            canBeTile[i] = Lattice::getTileOption(i)->canBeNear(t);
             if(!canBeTile[i])
                 // suddenly we cant, mark that there was an update
                 didWeModify = true;
@@ -165,13 +165,13 @@ bool Cell::collapse(){
     // otherwise we choose an option randomly
     int randomExistingOption = Seeder::getRandom(optionCount);
     // loop through our options to find the one we chose
-    for(int i = 0, k = 0; i < tilespc::tileOptionsCount; i++){
+    for(int i = 0, k = 0; i < Lattice::getTileOptionCount(); i++){
         // check is valid option
         if(canBeTile[i]){
             // check random number
             if(k==randomExistingOption){
                 //we found our option, collapse to this one
-                setTile(tilespc::getTileOption(i));
+                setTile(Lattice::getTileOption(i));
                 return true;
             }
             ++k;
@@ -209,14 +209,9 @@ void Cell::cellMain(){
     // setup RandomSeeder
     cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
     Seeder::setup();
-    // setup tile options
-    cout << "--> [Hand off]: going to Tile::setupTileOptions()" << endl;
-    tilespc::setupTileOptions();
 }
 
 void Cell::StaticCleanup(){
-    //TODO: delete the static stuffs
-    tilespc::staticCleanup();
 }
 
 

@@ -115,7 +115,7 @@ bool Lattice::hasEntropy(){
  */
 int Lattice::getLowestEntropy(){
     // start with highest possible
-    int lowestEntropy = getTileOptionCount();
+    int lowestEntropy = Lattice::getTileOptionCount();
     // loop through and check for something lower
     for(int x = 0; x < colCount; x++){
         for(int y = 0; y < rowCount; y++){
@@ -385,6 +385,10 @@ void Lattice::paint(){
  */
 int Lattice::getTileOptionCount(){
     return Lattice::tiles->getTotalTiles();
+}
+
+Tile *Lattice::getTileOption(int idx){
+    return Lattice::tiles->getTileOption(idx);
 }
 
 /**

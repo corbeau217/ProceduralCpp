@@ -45,5 +45,5 @@ void TileList::addTileOption(Tile *t){
 }
 
 int TileList::getTotalTiles(){
-    return totalAdded;
+    return TILEOPTIONS;
 }
