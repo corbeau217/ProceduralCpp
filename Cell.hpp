@@ -2,6 +2,7 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
+#include "Tile.hpp"
 #include "tilespcer.cpp"
 #include <iostream>
 
