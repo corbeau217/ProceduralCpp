@@ -1,9 +1,9 @@
 // header guard
-#ifndef TILELIST_HPP
-#define TILELIST_HPP
+#ifndef CELLTILELIST_HPP
+#define CELLTILELIST_HPP
 
 #include "raylib.h"
-#include "Tile.hpp"
+#include "CellTile.hpp"
 #include <iostream>
 
 using namespace std;
@@ -23,21 +23,21 @@ using namespace std;
  * @brief this holds the options for our tiles we can use on cells
  * 
  */
-class TileList{
+class CellTileList{
     public:
     int tileOptionsCount;
     int totalAdded;
-    Tile **tileOptions;
+    CellTile **tileOptions;
 
     //constructor
-    TileList();
+    CellTileList();
 
     //destructor
-    ~TileList();
+    ~CellTileList();
 
-    Tile *getTileOption(int idx);
+    CellTile *getTileOption(int idx);
 
-    void addTileOption(Tile *t);
+    void addTileOption(CellTile *t);
 
     static int getTotalTiles();
 };

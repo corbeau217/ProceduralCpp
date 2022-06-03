@@ -1,7 +1,7 @@
 #include "Seeder.hpp"
 #include "Cell.hpp"
 #include "Lattice.hpp"
-#include "TileList.hpp"
+#include "CellTileList.hpp"
 #include <iostream>
 
 using namespace std;
@@ -17,9 +17,9 @@ Cell::Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
         height = sIn;
         col = colIn;
         row = rowIn;
-        canBeTile = new bool[TileList::getTotalTiles()];
-        for(int i = 0; i < TileList::getTotalTiles(); i++)
-            canBeTile[i] = true;
+        canBeCellTile = new bool[CellTileList::getTotalTiles()];
+        for(int i = 0; i < CellTileList::getTotalTiles(); i++)
+            canBeCellTile[i] = true;
         tile = nullptr;
     }
 Cell::Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
@@ -30,15 +30,15 @@ Cell::Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
         height = hIn;
         col = colIn;
         row = rowIn;
-        canBeTile = new bool[TileList::getTotalTiles()];
-        for(int i = 0; i < TileList::getTotalTiles(); i++)
-            canBeTile[i] = true;
+        canBeCellTile = new bool[CellTileList::getTotalTiles()];
+        for(int i = 0; i < CellTileList::getTotalTiles(); i++)
+            canBeCellTile[i] = true;
         tile = nullptr;
 }
 // destructor
 Cell::~Cell(){
     delete tile;
-    delete canBeTile;
+    delete canBeCellTile;
 }
 
 
@@ -55,7 +55,7 @@ int Cell::getRow(){
  * @return true : no entropy
  * @return false : otherwise
  */
-bool Cell::chosenTile(){
+bool Cell::chosenCellTile(){
     return tileSet;
 }
 
@@ -67,16 +67,16 @@ bool Cell::chosenTile(){
  * TODO: check if this behaves correctly with empty tile reference, might need null tiles
  */
 int Cell::getEntropy(){
-    if(chosenTile())
+    if(chosenCellTile())
         return -1;
     int counter = 0;
-    for(int i = 0; i < TileList::getTotalTiles(); i++)
-        if(canBeTile[i])
+    for(int i = 0; i < CellTileList::getTotalTiles(); i++)
+        if(canBeCellTile[i])
             ++counter;
     return counter;
 }
 bool Cell::hasEntropy(){
-    return !chosenTile() && getEntropy()>0;
+    return !chosenCellTile() && getEntropy()>0;
 }
 
 /**
@@ -91,24 +91,24 @@ bool Cell::hasOptions(){
 
 
 /**
- * @brief Set the Tile object
+ * @brief Set the CellTile object
  * 
  * @param t : tile object
  */
-void Cell::setTile(Tile *t){
+void Cell::setCellTile(CellTile *t){
     tile = t;
-    for(int i = 0; i < TileList::getTotalTiles(); i++)
-        canBeTile[i] = false;
+    for(int i = 0; i < CellTileList::getTotalTiles(); i++)
+        canBeCellTile[i] = false;
     tileSet = true;
 }
 
 /**
  * @brief Get a reference to the tile this cell has
  * 
- * @return Tile* : returns nullptr if still has entropy
+ * @return CellTile* : returns nullptr if still has entropy
  */
-Tile *Cell::getTile(){
-    if(chosenTile())
+CellTile *Cell::getCellTile(){
+    if(chosenCellTile())
         return tile;
     return nullptr;
 }
@@ -121,14 +121,14 @@ Tile *Cell::getTile(){
  * @return true : if there was a change to this cell's options
  * @return false : otherwise
  */
-bool Cell::propagateNearbyTile(Tile *t){
+bool Cell::propagateNearbyCellTile(CellTile *t){
     bool didWeModify = false;
     // loop through all tile options
-    for(int i = 0; i < TileList::getTotalTiles(); i++){
-        if(canBeTile[i]){
+    for(int i = 0; i < CellTileList::getTotalTiles(); i++){
+        if(canBeCellTile[i]){
             //store if we can be near
-            canBeTile[i] = Lattice::getTileOption(i)->canBeNear(t);
-            if(!canBeTile[i])
+            canBeCellTile[i] = Lattice::getCellTileOption(i)->canBeNear(t);
+            if(!canBeCellTile[i])
                 // suddenly we cant, mark that there was an update
                 didWeModify = true;
         }
@@ -150,13 +150,13 @@ bool Cell::collapse(){
     // otherwise we choose an option randomly
     int randomExistingOption = Seeder::getRandom(optionCount);
     // loop through our options to find the one we chose
-    for(int i = 0, k = 0; i < TileList::getTotalTiles(); i++){
+    for(int i = 0, k = 0; i < CellTileList::getTotalTiles(); i++){
         // check is valid option
-        if(canBeTile[i]){
+        if(canBeCellTile[i]){
             // check random number
             if(k==randomExistingOption){
                 //we found our option, collapse to this one
-                setTile(Lattice::getTileOption(i));
+                setCellTile(Lattice::getCellTileOption(i));
                 return true;
             }
             ++k;
@@ -172,7 +172,7 @@ bool Cell::collapse(){
 void Cell::paint(){
     Color tileColor;
     // try get tile color
-    if(chosenTile())
+    if(chosenCellTile())
         tileColor = *(tile->getColor());
     else
         tileColor = WHITE;

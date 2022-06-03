@@ -5,7 +5,7 @@ using namespace std;
 
 
 
-TileList *Lattice::tiles = nullptr;
+CellTileList *Lattice::tiles = nullptr;
 
 
 // constructor
@@ -44,8 +44,8 @@ Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSiz
 
     if(Lattice::tiles==nullptr){
         // setup tile options
-        cout << "--> [Hand off]: going to Lattice::buildTileList()" << endl;
-        Lattice::tiles = new TileList();
+        cout << "--> [Hand off]: going to Lattice::buildCellTileList()" << endl;
+        Lattice::tiles = new CellTileList();
     }
 
     // setup RandomSeeder
@@ -114,7 +114,7 @@ bool Lattice::hasEntropy(){
  */
 int Lattice::getLowestEntropy(){
     // start with highest possible
-    int lowestEntropy = TileList::getTotalTiles();
+    int lowestEntropy = CellTileList::getTotalTiles();
     // loop through and check for something lower
     for(int x = 0; x < colCount; x++){
         for(int y = 0; y < rowCount; y++){
@@ -302,7 +302,7 @@ bool Lattice::collapse(int xIdx, int yIdx){
  */
 bool Lattice::propagate(int xIdx, int yIdx){
     // reference to updated cell's tile
-    Tile *updatedCellTile = get(xIdx,yIdx)->getTile();
+    CellTile *updatedCellCellTile = get(xIdx,yIdx)->getCellTile();
     // grab the adjacency list of the cell
     Cell **adjacencyArray = getAdjacencyArray(xIdx,yIdx);
     // bool to handle return at the end
@@ -313,7 +313,7 @@ bool Lattice::propagate(int xIdx, int yIdx){
         // check not nullptr cell in adjacency
         if(currCell!=nullptr){
             // check if propagating has change
-            if(currCell->propagateNearbyTile(updatedCellTile))
+            if(currCell->propagateNearbyCellTile(updatedCellCellTile))
                 changedAnyEntropy=true;
         }
     }
@@ -377,6 +377,6 @@ void Lattice::paint(){
             get(x,y)->paint();
 }
 
-Tile *Lattice::getTileOption(int idx){
+CellTile *Lattice::getCellTileOption(int idx){
     return Lattice::tiles->getTileOption(idx);
 }

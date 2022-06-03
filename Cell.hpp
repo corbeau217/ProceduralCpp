@@ -2,7 +2,7 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
-#include "Tile.hpp"
+#include "CellTile.hpp"
 #include <iostream>
 
 using namespace std;
@@ -26,11 +26,11 @@ class Cell {
     int col;
     int row;
     // these are for tile option
-    Tile* tile;
+    CellTile* tile;
     // keeps track of whether we've set this to have a tile yet
     bool tileSet;
     // keep track of what tiles we can be
-    bool* canBeTile;
+    bool* canBeCellTile;
 
     // constructor
     Cell(int xIn, int yIn, int sIn, int colIn, int rowIn);
@@ -48,7 +48,7 @@ class Cell {
      * @return true : no entropy
      * @return false : otherwise
      */
-    bool chosenTile();
+    bool chosenCellTile();
 
     /**
      * @brief returns how many options this cell has
@@ -70,18 +70,18 @@ class Cell {
 
 
     /**
-     * @brief Set the Tile object
+     * @brief Set the CellTile object
      * 
      * @param t : tile object
      */
-    void setTile(Tile *t);
+    void setCellTile(CellTile *t);
 
     /**
      * @brief Get a reference to the tile this cell has
      * 
-     * @return Tile* : returns nullptr if still has entropy
+     * @return CellTile* : returns nullptr if still has entropy
      */
-    Tile *getTile();
+    CellTile *getCellTile();
 
 
     /**
@@ -91,7 +91,7 @@ class Cell {
      * @return true : if there was a change to this cell's options
      * @return false : otherwise
      */
-    bool propagateNearbyTile(Tile *t);
+    bool propagateNearbyCellTile(CellTile *t);
 
     /**
      * @brief : choose random option available out of the tile options

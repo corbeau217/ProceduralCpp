@@ -1,6 +1,6 @@
 // header guard
-#ifndef TILE_HPP
-#define TILE_HPP
+#ifndef CELLTILE_HPP
+#define CELLTILE_HPP
 
 #include "raylib.h"
 #include <iostream>
@@ -15,7 +15,7 @@ using namespace std;
  * 
  * 
  */
-class Tile{
+class CellTile{
     public:
     int tileIdx;
     bool *canBeNearTile;
@@ -24,11 +24,11 @@ class Tile{
 
 
     //constructor
-    Tile(const char *nameIn);
-    Tile(const char *nameIn, Color colorIn);
+    CellTile(const char *nameIn);
+    CellTile(const char *nameIn, Color colorIn);
 
     //destructor
-    ~Tile();
+    ~CellTile();
 
     /**
      * @brief Get the index of this tile
@@ -38,13 +38,13 @@ class Tile{
     int getTileIdx();
 
     /**
-     * @brief Set the Tile index
+     * @brief Set the CellTile index
      * 
      * @param idx : index to set it to
      * 
      * has builder pattern
      */
-    Tile *setTileIdx(int idx);
+    CellTile *setTileIdx(int idx);
 
     bool canBeNear(int idx);
 
@@ -56,9 +56,9 @@ class Tile{
      * @return false : otherwise
      * PRE: t was setup with valid tile index
      */
-    bool canBeNear(Tile *t);
+    bool canBeNear(CellTile *t);
 
-    Tile *setDisallowsAdjacency(int idx);
+    CellTile *setDisallowsAdjacency(int idx);
 
     /**
      * @brief Set cannot be near tile
@@ -66,7 +66,7 @@ class Tile{
      * @param t : tile cant be near
      * PRE: t was setup with valid tile index
      */
-    Tile *setDisallowsAdjacency(Tile *t);
+    CellTile *setDisallowsAdjacency(CellTile *t);
 
     /**
      * @brief Set the color of this cell
@@ -75,7 +75,7 @@ class Tile{
      * 
      * has builder pattern
      */
-    Tile *setColor(Color c);
+    CellTile *setColor(Color c);
 
 
     /**

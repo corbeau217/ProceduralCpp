@@ -1,6 +1,6 @@
 #include "raylib.h"
-#include "Tile.hpp"
-#include "TileList.hpp"
+#include "CellTile.hpp"
+#include "CellTileList.hpp"
 #include <iostream>
 
 using namespace std;
@@ -9,24 +9,24 @@ using namespace std;
 
 
 //constructor
-Tile::Tile(const char *nameIn) {
+CellTile::CellTile(const char *nameIn) {
     tileIdx = -1;
     tileName = nameIn;
-    canBeNearTile = new bool[TileList::getTotalTiles()];
-    for(int i = 0; i < TileList::getTotalTiles(); i++)
+    canBeNearTile = new bool[CellTileList::getTotalTiles()];
+    for(int i = 0; i < CellTileList::getTotalTiles(); i++)
         canBeNearTile[i] = true;
     tileColor = WHITE;
 }
-Tile::Tile(const char *nameIn, Color colorIn) {
+CellTile::CellTile(const char *nameIn, Color colorIn) {
     tileIdx = -1;
     tileName = nameIn;
-    canBeNearTile = new bool[TileList::getTotalTiles()];
-    for(int i = 0; i < TileList::getTotalTiles(); i++)
+    canBeNearTile = new bool[CellTileList::getTotalTiles()];
+    for(int i = 0; i < CellTileList::getTotalTiles(); i++)
         canBeNearTile[i] = true;
     tileColor = colorIn;
 }
 //destructor
-Tile::~Tile(){
+CellTile::~CellTile(){
     delete canBeNearTile;
     delete tileName;
 }
@@ -36,22 +36,22 @@ Tile::~Tile(){
  * 
  * @return int : returns -1 if no tile index was set
  */
-int Tile::getTileIdx(){
+int CellTile::getTileIdx(){
     return tileIdx;
 }
 /**
- * @brief Set the Tile index
+ * @brief Set the CellTile index
  * 
  * @param idx : index to set it to
  * 
  * has builder pattern
  */
-Tile *Tile::setTileIdx(int idx){
+CellTile *CellTile::setTileIdx(int idx){
     tileIdx = idx;
     return this;
 }
 
-bool Tile::canBeNear(int idx){
+bool CellTile::canBeNear(int idx){
     return canBeNearTile[idx];
 }
 /**
@@ -62,11 +62,11 @@ bool Tile::canBeNear(int idx){
  * @return false : otherwise
  * PRE: t was setup with valid tile index
  */
-bool Tile::canBeNear(Tile *t){
+bool CellTile::canBeNear(CellTile *t){
     return canBeNear(t->getTileIdx());
 }
 
-Tile *Tile::setDisallowsAdjacency(int idx){
+CellTile *CellTile::setDisallowsAdjacency(int idx){
     canBeNearTile[idx] = false;
     return this;
 }
@@ -76,7 +76,7 @@ Tile *Tile::setDisallowsAdjacency(int idx){
  * @param t : tile cant be near
  * PRE: t was setup with valid tile index
  */
-Tile *Tile::setDisallowsAdjacency(Tile *t){
+CellTile *CellTile::setDisallowsAdjacency(CellTile *t){
     return setDisallowsAdjacency(t->getTileIdx());
 }
 
@@ -87,7 +87,7 @@ Tile *Tile::setDisallowsAdjacency(Tile *t){
  * 
  * has builder pattern
  */
-Tile *Tile::setColor(Color c){
+CellTile *CellTile::setColor(Color c){
     tileColor = c;
     return this;
 }
@@ -98,7 +98,7 @@ Tile *Tile::setColor(Color c){
  * 
  * @return Color* : color of this tile
  */
-Color *Tile::getColor(){
+Color *CellTile::getColor(){
     return &tileColor;
 }
 

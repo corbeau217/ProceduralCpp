@@ -4,7 +4,7 @@
 
 #include "Cell.hpp"
 #include "Seeder.hpp"
-#include "TileList.hpp"
+#include "CellTileList.hpp"
 #include <iostream>
 
 using namespace std;
@@ -19,7 +19,7 @@ using namespace std;
  */
 class Lattice{
     public:
-    static TileList *tiles;
+    static CellTileList *tiles;
     // our cell grid
     int xPos;
     int yPos;
@@ -174,7 +174,7 @@ class Lattice{
     void paint();
 
 
-    static Tile *getTileOption(int idx);
+    static CellTile *getCellTileOption(int idx);
 
 };
 

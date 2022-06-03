@@ -1,26 +1,26 @@
-#include "TileList.hpp"
+#include "CellTileList.hpp"
 #include <iostream>
 
 using namespace std;
 
 
 //constructor
-TileList::TileList(){
+CellTileList::CellTileList(){
     // tell the client we're doing the tiles
-    cout << "--> [Setting up]: TileList" << endl;
+    cout << "--> [Setting up]: CellTileList" << endl;
 
     // set up variables
-    tileOptionsCount = TileList::getTotalTiles();
+    tileOptionsCount = CellTileList::getTotalTiles();
     totalAdded = 0;
     // setup pointers
-    tileOptions = new Tile*[tileOptionsCount];
+    tileOptions = new CellTile*[tileOptionsCount];
     for(int i = 0; i < tileOptionsCount; i++)
         tileOptions[i] = nullptr;
     
     // Grass
     cout << "--> [Building]: Grass" << endl;
     // tileColor = new Color(0x74b72e);
-    addTileOption( new Tile("Grass", (Color){65,169,76,255}) );
+    addTileOption( new CellTile("Grass", (Color){65,169,76,255}) );
     getTileOption( TILEIDX_GRASS )
             ->setTileIdx( TILEIDX_GRASS )
             ->setDisallowsAdjacency( TILEIDX_OCEAN  )
@@ -28,7 +28,7 @@ TileList::TileList(){
 
     // Sand
     cout << "--> [Building]: Sand" << endl;
-    addTileOption( new Tile("Sand",(Color){255,255,153,255}) );
+    addTileOption( new CellTile("Sand",(Color){255,255,153,255}) );
     getTileOption( TILEIDX_SAND )
             ->setTileIdx( TILEIDX_SAND )
             ->setDisallowsAdjacency( TILEIDX_OCEAN  )
@@ -37,7 +37,7 @@ TileList::TileList(){
 
     // Water
     cout << "--> [Building]: Water" << endl;
-    addTileOption( new Tile("Water",(Color){115,215,255,255}) );
+    addTileOption( new CellTile("Water",(Color){115,215,255,255}) );
     getTileOption( TILEIDX_WATER )
             ->setTileIdx( TILEIDX_WATER )
             ->setDisallowsAdjacency( TILEIDX_GRASS  )
@@ -46,7 +46,7 @@ TileList::TileList(){
 
     // Ocean
     cout << "--> [Building]: Ocean" << endl;
-    addTileOption( new Tile("Ocean",(Color){30,144,255,255}) );
+    addTileOption( new CellTile("Ocean",(Color){30,144,255,255}) );
     getTileOption( TILEIDX_OCEAN )
             ->setTileIdx( TILEIDX_OCEAN )
             ->setDisallowsAdjacency( TILEIDX_GRASS  )
@@ -56,7 +56,7 @@ TileList::TileList(){
 
     // Forest
     cout << "--> [Building]: Forest" << endl;
-    addTileOption( new Tile("Forest",(Color){0,82,33,255}) );
+    addTileOption( new CellTile("Forest",(Color){0,82,33,255}) );
     getTileOption( TILEIDX_FOREST )
             ->setTileIdx( TILEIDX_FOREST )
             ->setDisallowsAdjacency( TILEIDX_SAND   )
@@ -67,7 +67,7 @@ TileList::TileList(){
 
     // Deep Ocean
     cout << "--> [Building]: Deep Ocean" << endl;
-    addTileOption( new Tile("Deep Ocean",(Color){0,71,100,255}) );
+    addTileOption( new CellTile("Deep Ocean",(Color){0,71,100,255}) );
     getTileOption( TILEIDX_DEEPOCEAN )
             ->setTileIdx( TILEIDX_DEEPOCEAN )
             ->setDisallowsAdjacency( TILEIDX_GRASS   )
@@ -78,7 +78,7 @@ TileList::TileList(){
 
     // Plains
     cout << "--> [Building]: Plains" << endl;
-    addTileOption( new Tile("Plains",(Color){204,235,197,255}) );
+    addTileOption( new CellTile("Plains",(Color){204,235,197,255}) );
     getTileOption( TILEIDX_PLAINS )
             ->setTileIdx( TILEIDX_PLAINS )
             ->setDisallowsAdjacency( TILEIDX_OCEAN   )
@@ -89,7 +89,7 @@ TileList::TileList(){
 
 }
 //destructor
-TileList::~TileList(){
+CellTileList::~CellTileList(){
     for(int i = 0; i < tileOptionsCount; i++)
         delete tileOptions[i];
     delete tileOptions;
@@ -98,17 +98,17 @@ TileList::~TileList(){
 
 
 
-Tile *TileList::getTileOption(int idx){
+CellTile *CellTileList::getTileOption(int idx){
     return tileOptions[idx];
 }
 
-void TileList::addTileOption(Tile *t){
+void CellTileList::addTileOption(CellTile *t){
     if(totalAdded<tileOptionsCount){
         tileOptions[totalAdded] = t;
         ++totalAdded;
     }
 }
 
-int TileList::getTotalTiles(){
+int CellTileList::getTotalTiles(){
     return TILEOPTION_MAX;
 }
