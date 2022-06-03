@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include "Lattice.cpp"
+#include "Lattice.hpp"
 #include <iostream>
 
 using namespace std;
