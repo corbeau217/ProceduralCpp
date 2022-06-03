@@ -46,11 +46,15 @@ Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSiz
         }
     }
 
-    if(Lattice::tiles==nullptr)
+    if(Lattice::tiles==nullptr){
+        // setup tile options
+        cout << "--> [Hand off]: going to Lattice::buildTileList()" << endl;
         Lattice::buildTileList();
+    }
 
-    cout << "--> [Hand off]: going to Cell::cellMain()" << endl;
-    Cell::cellMain();
+    // setup RandomSeeder
+    cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
+    Seeder::setup();
 }
 
 // destructor
@@ -62,7 +66,6 @@ Lattice::~Lattice(){
         delete cells[x];
     }
     delete cells;
-    Cell::StaticCleanup();
 }
 
 /**

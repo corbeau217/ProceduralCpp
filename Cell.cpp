@@ -199,19 +199,7 @@ void Cell::paint(){
 
 
 
-/**
- * @brief static handle for cell
- * 
- */
-void Cell::cellMain(){
-    cout << "--> [Setting up]: Cell::cellMain()" << endl;
 
-    // setup RandomSeeder
-    cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
-    Seeder::setup();
-}
 
-void Cell::StaticCleanup(){
-}
 
 

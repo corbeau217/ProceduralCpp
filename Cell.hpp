@@ -118,13 +118,6 @@ class Cell {
 
 
 
-    /**
-     * @brief static handle for cell
-     * 
-     */
-    static void cellMain();
-
-    static void StaticCleanup();
 
 };
 
