@@ -1,4 +1,4 @@
-#include "Cell.cpp"
+#include "Cell.hpp"
 #include "Seeder.hpp"
 #include <iostream>
 
