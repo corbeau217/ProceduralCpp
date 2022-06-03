@@ -1,5 +1,8 @@
 # procedural C++ code thing
 
+## currently working on:
+#### as at 5:05am 4/6/22:
+- moving over to using lists/groups of cells that are then handed off to in a tree structure to have a less "noisy" generation of terrain
 
 ## Screenshots:
 
