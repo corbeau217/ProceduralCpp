@@ -1,0 +1,34 @@
+# our git ignore file so we can ignore those logs and compiles files for now
+# we used these links for building this:
+#   
+
+# ------------------------------------------------
+# Ignore all
+#   this is so the no extension files get ignored
+#   and the outputs etc
+*
+
+
+# ------------------------------------------------
+# Unignore our files we use
+
+# github files
+!.gitattributes
+!.gitignore
+
+# c/c++ related files
+!**.c
+!**.h
+!**.cpp
+!**.hpp
+
+# IDE/other files
+!**.json
+!**.txt
+!**.csv
+!**.md
+
+# raylib stuffs
+!**.dll
+!Makefile
+!main.code-workspace
