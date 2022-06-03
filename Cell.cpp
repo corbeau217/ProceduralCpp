@@ -1,6 +1,7 @@
 
 #include "Seeder.hpp"
 #include "Cell.hpp"
+#include "Lattice.hpp"
 #include <iostream>
 
 using namespace std;

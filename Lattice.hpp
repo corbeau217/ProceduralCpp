@@ -4,6 +4,7 @@
 
 #include "Cell.hpp"
 #include "Seeder.hpp"
+#include "TileList.hpp"
 #include <iostream>
 
 using namespace std;
@@ -21,6 +22,7 @@ using namespace std;
  */
 class Lattice{
     public:
+    static TileList *tiles;
     // our cell grid
     int xPos;
     int yPos;
@@ -173,6 +175,16 @@ class Lattice{
      * 
      */
     void paint();
+
+
+    /**
+     * @brief interface to the static tile list for getting the tile count
+     * 
+     * @return int 
+     */
+    int getTileOptionCount();
+
+    static void buildTileList();
 
 };
 
