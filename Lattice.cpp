@@ -7,10 +7,6 @@ using namespace std;
 
 TileList *Lattice::tiles = nullptr;
 
-/**
- * @brief try with using array of indexes for dealing with things or using an array of Cell pointers
- * 
- */
 
 // constructor
 Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn) {

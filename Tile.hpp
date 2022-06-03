@@ -11,7 +11,7 @@ using namespace std;
 
 
 /**
- * @brief this is the tiles that we can use
+ * @brief this is the tile instances we can use
  * 
  * 
  */

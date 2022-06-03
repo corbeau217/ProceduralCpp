@@ -12,15 +12,7 @@ using namespace std;
 
 
 /**
- * @brief this is the cell that goes into lattice
- * 
- * 
- * TODO: need to find a way to say an empty cell for "nulls"
- *          maybe just have a bool that's called like "isInLattice"
- * 
- * 
- * TODO: have each cell setup with an array of tile options and then
- *          just modify that list during propagation/collapsing
+ * @brief this is the cell object that goes into lattice
  * 
  */
 class Cell {

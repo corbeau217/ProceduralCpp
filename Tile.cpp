@@ -8,14 +8,6 @@ using namespace std;
 
 
 
-/**
- * @brief this is the tiles that we can use
- * 
- * 
- */
-
-
-
 //constructor
 Tile::Tile(const char *nameIn) {
     tileIdx = -1;

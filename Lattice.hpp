@@ -14,7 +14,7 @@ using namespace std;
 #define ADJACENT_LIST_SIZE 8
 
 /**
- * @brief try with using array of indexes for dealing with things or using an array of Cell pointers
+ * @brief this holds the 2d cell pointer array for manipulation
  * 
  */
 class Lattice{

@@ -13,7 +13,10 @@ using namespace std;
 
 
 
-
+/**
+ * @brief handles the seed for trying to generate the same lattice a second time
+ * 
+ */
 class Seeder{
     public:
     static const long int currSeed = CURRENTSEED;

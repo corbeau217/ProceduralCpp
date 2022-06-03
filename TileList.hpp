@@ -19,6 +19,10 @@ using namespace std;
 #define TILEIDX_DEEPOCEAN 5
 #define TILEIDX_PLAINS 6
 
+/**
+ * @brief this holds the options for our tiles we can use on cells
+ * 
+ */
 class TileList{
     public:
     int tileOptionsCount;
