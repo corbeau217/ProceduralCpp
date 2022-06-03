@@ -26,7 +26,7 @@ class TileList{
     Tile **tileOptions;
 
     //constructor
-    TileList(int total);
+    TileList();
 
     //destructor
     ~TileList();

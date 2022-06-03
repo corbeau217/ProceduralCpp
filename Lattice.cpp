@@ -49,7 +49,7 @@ Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSiz
     if(Lattice::tiles==nullptr){
         // setup tile options
         cout << "--> [Hand off]: going to Lattice::buildTileList()" << endl;
-        Lattice::buildTileList();
+        Lattice::tiles = new TileList();
     }
 
     // setup RandomSeeder
@@ -392,91 +392,4 @@ int Lattice::getTileOptionCount(){
 
 Tile *Lattice::getTileOption(int idx){
     return Lattice::tiles->getTileOption(idx);
-}
-
-/**
- * @brief sets up the tile options
- * 
- */
-void Lattice::buildTileList(){
-    
-    // tell the client we're doing the tiles
-    cout << "--> [Setting up]: Lattice::buildTileList()" << endl;
-
-    Lattice::tiles = new TileList(TILEOPTIONS);
-
-    //get a reference
-    TileList *tiles = Lattice::tiles;
-    
-    // Grass
-    cout << "--> [Building]: Grass" << endl;
-    // tileColor = new Color(0x74b72e);
-    tiles->addTileOption( new Tile("Grass", (Color){65,169,76,255}) );
-    tiles->getTileOption( TILEIDX_GRASS )
-            ->setTileIdx( TILEIDX_GRASS )
-            ->setDisallowsAdjacency( TILEIDX_OCEAN  )
-            ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
-
-    // Sand
-    cout << "--> [Building]: Sand" << endl;
-    tiles->addTileOption( new Tile("Sand",(Color){255,255,153,255}) );
-    tiles->getTileOption( TILEIDX_SAND )
-            ->setTileIdx( TILEIDX_SAND )
-            ->setDisallowsAdjacency( TILEIDX_OCEAN  )
-            ->setDisallowsAdjacency( TILEIDX_FOREST )
-            ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
-
-    // Water
-    cout << "--> [Building]: Water" << endl;
-    tiles->addTileOption( new Tile("Water",(Color){115,215,255,255}) );
-    tiles->getTileOption( TILEIDX_WATER )
-            ->setTileIdx( TILEIDX_WATER )
-            ->setDisallowsAdjacency( TILEIDX_GRASS  )
-            ->setDisallowsAdjacency( TILEIDX_FOREST )
-            ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
-
-    // Ocean
-    cout << "--> [Building]: Ocean" << endl;
-    tiles->addTileOption( new Tile("Ocean",(Color){30,144,255,255}) );
-    tiles->getTileOption( TILEIDX_OCEAN )
-            ->setTileIdx( TILEIDX_OCEAN )
-            ->setDisallowsAdjacency( TILEIDX_GRASS  )
-            ->setDisallowsAdjacency( TILEIDX_SAND   )
-            ->setDisallowsAdjacency( TILEIDX_FOREST )
-            ->setDisallowsAdjacency( TILEIDX_PLAINS );
-
-    // Forest
-    cout << "--> [Building]: Forest" << endl;
-    tiles->addTileOption( new Tile("Forest",(Color){0,82,33,255}) );
-    tiles->getTileOption( TILEIDX_FOREST )
-            ->setTileIdx( TILEIDX_FOREST )
-            ->setDisallowsAdjacency( TILEIDX_SAND   )
-            ->setDisallowsAdjacency( TILEIDX_WATER  )
-            ->setDisallowsAdjacency( TILEIDX_OCEAN  )
-            ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  )
-            ->setDisallowsAdjacency( TILEIDX_PLAINS );
-
-    // Deep Ocean
-    cout << "--> [Building]: Deep Ocean" << endl;
-    tiles->addTileOption( new Tile("Deep Ocean",(Color){0,71,100,255}) );
-    tiles->getTileOption( TILEIDX_DEEPOCEAN )
-            ->setTileIdx( TILEIDX_DEEPOCEAN )
-            ->setDisallowsAdjacency( TILEIDX_GRASS   )
-            ->setDisallowsAdjacency( TILEIDX_SAND    )
-            ->setDisallowsAdjacency( TILEIDX_FOREST  )
-            ->setDisallowsAdjacency( TILEIDX_WATER   )
-            ->setDisallowsAdjacency( TILEIDX_PLAINS  );
-
-    // Plains
-    cout << "--> [Building]: Plains" << endl;
-    tiles->addTileOption( new Tile("Plains",(Color){204,235,197,255}) );
-    tiles->getTileOption( TILEIDX_PLAINS )
-            ->setTileIdx( TILEIDX_PLAINS )
-            ->setDisallowsAdjacency( TILEIDX_OCEAN   )
-            ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  )
-            ->setDisallowsAdjacency( TILEIDX_FOREST  );
-
-    cout << "--> Done building tiles" << endl;
-    
-
 }

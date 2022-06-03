@@ -186,8 +186,6 @@ class Lattice{
 
     static Tile *getTileOption(int idx);
 
-    static void buildTileList();
-
 };
 
 #endif
