@@ -18,6 +18,8 @@ using namespace std;
  * 
  * TODO: (after) setup weights for allowed adjacency rather than boolean values
  * 
+ * TODO: need to setup with being able to hit space or something and generate a new lattice
+ * 
  * 
  * 
  */

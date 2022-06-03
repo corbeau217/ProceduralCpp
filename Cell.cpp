@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-class RandomSeeder{
+class Seeder{
     public:
     static const long int currSeed = CURRENTSEED;
     
@@ -23,7 +23,7 @@ class RandomSeeder{
      * 
      */
     static void setup(){
-        cout << "--> [Setting up]: RandomSeeder::setup()" << endl;
+        cout << "--> [Setting up]: Seeder::setup()" << endl;
         long int seed;
         if(currSeed==0)
             seed = (long int)time(NULL);
@@ -207,7 +207,7 @@ class Cell {
         if(optionCount<1) // no options return false
             return false;
         // otherwise we choose an option randomly
-        int randomExistingOption = RandomSeeder::getRandom(optionCount);
+        int randomExistingOption = Seeder::getRandom(optionCount);
         // loop through our options to find the one we chose
         for(int i = 0, k = 0; i < tilespc::tileOptionsCount; i++){
             // check is valid option
@@ -252,7 +252,7 @@ class Cell {
 
         // setup RandomSeeder
         cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
-        RandomSeeder::setup();
+        Seeder::setup();
         // setup tile options
         cout << "--> [Hand off]: going to Tile::setupTileOptions()" << endl;
         tilespc::setupTileOptions();

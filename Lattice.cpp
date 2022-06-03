@@ -200,7 +200,7 @@ class Lattice{
         int lowestEntropyCount = getLowestEntropyCount();
         Cell **lowestEntropyList = getLowestEntropyList();
         // choose a random option and return
-        return lowestEntropyList[RandomSeeder::getRandom(lowestEntropyCount)];
+        return lowestEntropyList[Seeder::getRandom(lowestEntropyCount)];
     }
 
     /**
