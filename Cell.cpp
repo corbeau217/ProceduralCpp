@@ -1,5 +1,5 @@
 #include "Tile.cpp"
-#include "Seeder.cpp"
+#include "Seeder.hpp"
 #include <iostream>
 
 using namespace std;
