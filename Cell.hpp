@@ -2,6 +2,7 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
+#include "Util.hpp"
 #include "Tile.hpp"
 #include <iostream>
 
@@ -14,25 +15,12 @@ using namespace std;
 /**
  * @brief this is the cell that goes into lattice
  * 
- * 
- * TODO: need to find a way to say an empty cell for "nulls"
- *          maybe just have a bool that's called like "isInLattice"
- * 
- * 
- * TODO: have each cell setup with an array of tile options and then
- *          just modify that list during propagation/collapsing
- * 
  */
 class Cell {
     public:
-    // drawing variables
-    int xPos;
-    int yPos;
-    int width;
-    int height;
-    // lattice variables
-    int col;
-    int row;
+    rect *guiPlacement;
+    int2D *loc;
+
     // these are for tile option
     Tile* tile;
     // keeps track of whether we've set this to have a tile yet
@@ -41,8 +29,7 @@ class Cell {
     bool* canBeTile;
 
     // constructor
-    Cell(int xIn, int yIn, int sIn, int colIn, int rowIn);
-    Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn);
+    Cell(rect *inPlacement, int2D *locIn);
     // destructor
     ~Cell();
 

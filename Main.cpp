@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "Lattice.hpp"
+#include "Util.hpp"
 #include <iostream>
 
 using namespace std;
@@ -40,9 +41,10 @@ int getHeight(){
 
 void setupApp(){
     cout << "--> Setting up app" << endl;
-    // setup our ammounts
+    // setup our amounts
     leftMargin = 10;
     topMargin = 10;
+    int2D *latticePos = new int2D{leftMargin,topMargin};
     int colCount = 70;
     int rowCount = 40;
     int cellSize = 18;
@@ -50,7 +52,7 @@ void setupApp(){
     appWidth = leftMargin*2 + cellSize*colCount;
     appHeight = topMargin*2 + cellSize*rowCount;
     // setup the grid
-    grid = new Lattice(leftMargin,topMargin,colCount,rowCount,cellSize);
+    grid = new Lattice(latticePos,colCount,rowCount,cellSize);
 
     InitWindow( getWidth(), getHeight(), "Procedural C++");
     SetTargetFPS( FRAMERATE );

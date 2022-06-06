@@ -13,38 +13,39 @@ TileList *Lattice::tiles = nullptr;
  */
 
 // constructor
-Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn) {
+Lattice::Lattice(int2D *drawPos, int colCountIn, int rowCountIn, int cellSizeIn) {
     cout << "--> [setting up]: Lattice object" << endl;
-
-    xPos = xLoc;
-    yPos = yLoc;
-    colCount = colCountIn;
-    rowCount = rowCountIn;
-    totalCells = colCount*rowCount;
+    // cell array stuffs
+    pos = new int2D{drawPos->x,drawPos->y};
+    cellCount = new int2D{colCountIn, rowCountIn};
+    totalCells = (cellCount->x) * (cellCount->y);
     filledCells = 0;
     cellSize = cellSizeIn;
+    // iter handle
+    iterPos = new int2D{0,0};
+
     // have a colCount length array of Cell** 
     cout << "--> [Generating]: cells pointer array" << endl;
-    cells = new Cell**[colCount];
-    for(int idx = 0; idx < colCount; idx++){
+    cells = new Cell**[cellCount->x];
+    for(int x = 0; x < cellCount->x; x++){
         // each Cell* is rowCount of Cell*
-        cells[idx] = new Cell*[rowCount];
-        for(int idx2 = 0; idx2 < rowCount; idx2++)
-            cells[idx][idx2] = nullptr;
-    }
-    builtGrid = false;
-
-    cout << "--> [Generating]: cell objects" << endl;
-    // loop through our Cell pointers
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
-            // get our relative position
-            int cellXPos = xPos + x*cellSize;
-            int cellYPos = yPos + y*cellSize;
+        cells[x] = new Cell*[cellCount->y];
+        for(int y = 0; y < cellCount->y; y++){
             // make the cell
-            cells[x][y] = new Cell(cellXPos, cellYPos, cellSize, x, y);
+            cells[x][y] = new Cell(
+                // cell ui placement
+                new rect{
+                    pos->x + x*cellSize,
+                    pos->y + y*cellSize,
+                    cellSize,
+                    cellSize
+                },
+                // cell location
+                new int2D{x,y}
+            );
         }
     }
+    builtGrid = false;
 
     if(Lattice::tiles==nullptr){
         // setup tile options
@@ -59,14 +60,53 @@ Lattice::Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSiz
 
 // destructor
 Lattice::~Lattice(){
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
+    for(int x = 0; x < cellCount->x; x++){
+        for(int y = 0; y < cellCount->y; y++){
                 delete cells[x][y];
         }
         delete cells[x];
     }
     delete cells;
 }
+
+
+/**
+ * @brief used for the iterator pattern on our lattice
+ * 
+ * @return true : if at last position
+ * @return false : otherwise
+ */
+bool Lattice::iterDone(){
+    return iterPos->y >= cellCount->y-1 && iterPos->x >= cellCount->x-1;
+}
+/**
+ * @brief move to next location
+ * 
+ */
+void Lattice::iterNext(){
+    if(iterPos->x == cellCount->x-1){
+        iterPos->x = 0;
+        iterPos->y += 1;
+    }
+    else
+        iterPos->x += 1;
+}
+/**
+ * @brief reset our iterPos to first location
+ * 
+ */
+void Lattice::iterBegin(){
+    iterPos->x = 0;
+    iterPos->y = 0;
+}
+/**
+ * @brief returns current iterator location
+ * 
+ */
+Cell *Lattice::iterCurrent(){
+    return  get(iterPos);
+}
+
 
 /**
  * @brief checks if there is a valid location with col and row idx
@@ -77,7 +117,7 @@ Lattice::~Lattice(){
  * @return false otherwise
  */
 bool Lattice::isValidLocation(int col, int row){
-    return (col>-1&&row>-1)&&(col<colCount&&row<rowCount);
+    return (col>-1&&row>-1)&&(col<cellCount->x&&row<cellCount->y);
 }
 
 /**
@@ -92,6 +132,9 @@ Cell *Lattice::get(int col, int row){
         return cells[col][row];
     return nullptr;
 }
+Cell *Lattice::get(int2D *locIn){
+    return get(locIn->x, locIn->y);
+}
 
 /**
  * @brief returns if there's any entropy in the lattice
@@ -101,8 +144,8 @@ Cell *Lattice::get(int col, int row){
  */
 bool Lattice::hasEntropy(){
     // loop through and check entropy
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
+    for(int x = 0; x < cellCount->x; x++){
+        for(int y = 0; y < cellCount->y; y++){
             bool currCellEntropy = get(x,y)->hasEntropy();
             // return true if cell has entropy
             if(currCellEntropy) return true;
@@ -120,8 +163,8 @@ int Lattice::getLowestEntropy(){
     // start with highest possible
     int lowestEntropy = TileList::getTotalTiles();
     // loop through and check for something lower
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
+    for(int x = 0; x < cellCount->x; x++){
+        for(int y = 0; y < cellCount->y; y++){
             int currCellEntropy = get(x,y)->getEntropy();
             // only look for low entropy where we havent set the tile already
             if(currCellEntropy<lowestEntropy && currCellEntropy>0)
@@ -141,8 +184,8 @@ int Lattice::getHasEntropyCount(int entropyVal){
     // counter for total matching
     int totalOfEntropyAtVal = 0;
     // loop through and check
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
+    for(int x = 0; x < cellCount->x; x++){
+        for(int y = 0; y < cellCount->y; y++){
             int currCellEntropy = get(x,y)->getEntropy();
             if(currCellEntropy==entropyVal)
                 ++totalOfEntropyAtVal;
@@ -179,8 +222,8 @@ Cell **Lattice::getLowestEntropyList(){
     // keep track of our current place in the array
     int currCount = 0;
     // loop through to find matching cells
-    for(int x = 0; x < colCount; x++){
-        for(int y = 0; y < rowCount; y++){
+    for(int x = 0; x < cellCount->x; x++){
+        for(int y = 0; y < cellCount->y; y++){
             // check if it has lowest entropy
             if(get(x,y)->getEntropy()==lowestEntropy){
                 // add to our array if it does
@@ -376,8 +419,8 @@ void Lattice::paint(){
     if(!builtGrid)
         buildLattice();
     // paint the cells
-    for(int x = 0; x<colCount; x++)
-        for(int y = 0; y < rowCount; y++)
+    for(int x = 0; x<cellCount->x; x++)
+        for(int y = 0; y < cellCount->y; y++)
             get(x,y)->paint();
 }
 

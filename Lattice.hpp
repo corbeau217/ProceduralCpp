@@ -5,6 +5,7 @@
 #include "Cell.hpp"
 #include "Seeder.hpp"
 #include "TileList.hpp"
+#include "Util.hpp"
 #include <iostream>
 
 using namespace std;
@@ -21,21 +22,46 @@ class Lattice{
     public:
     static TileList *tiles;
     // our cell grid
-    int xPos;
-    int yPos;
+    int2D *pos;
+    int2D *cellCount;
     Cell*** cells;
-    int colCount;
-    int rowCount;
+    // other stuff
     int cellSize;
     bool builtGrid;
     int totalCells;
     int filledCells;
+    // iter variable
+    int2D *iterPos;
 
     // constructor
-    Lattice(int xLoc, int yLoc, int colCountIn, int rowCountIn, int cellSizeIn);
+    Lattice(int2D *drawPos, int colCountIn, int rowCountIn, int cellSizeIn);
 
     // destructor
     ~Lattice();
+
+    /**
+     * @brief used for the iterator pattern on our lattice
+     * 
+     * @return true : if at last position
+     * @return false : otherwise
+     */
+    bool iterDone();
+    /**
+     * @brief move to next location
+     * 
+     */
+    void iterNext();
+    /**
+     * @brief reset our iterPos to first location
+     * 
+     */
+    void iterBegin();
+    /**
+     * @brief returns current iterator location
+     * 
+     */
+    Cell *iterCurrent();
+
 
     /**
      * @brief checks if there is a valid location with col and row idx
@@ -55,6 +81,7 @@ class Lattice{
      * @return Cell *: pointer to cell
      */
     Cell *get(int col, int row);
+    Cell *get(int2D *locIn);
     
     /**
      * @brief returns if there's any entropy in the lattice

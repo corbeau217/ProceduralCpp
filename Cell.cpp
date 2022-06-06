@@ -1,6 +1,6 @@
 
-#include "Seeder.hpp"
 #include "Cell.hpp"
+#include "Seeder.hpp"
 #include "Lattice.hpp"
 #include "TileList.hpp"
 #include <iostream>
@@ -13,55 +13,33 @@ using namespace std;
 /**
  * @brief this is the cell that goes into lattice
  * 
- * 
- * TODO: need to find a way to say an empty cell for "nulls"
- *          maybe just have a bool that's called like "isInLattice"
- * 
- * 
- * TODO: have each cell setup with an array of tile options and then
- *          just modify that list during propagation/collapsing
- * 
  */
 
 // constructor
-Cell::Cell(int xIn, int yIn, int sIn, int colIn, int rowIn) {
-        tileSet = false;
-        xPos = xIn;
-        yPos = yIn;
-        width = sIn;
-        height = sIn;
-        col = colIn;
-        row = rowIn;
-        canBeTile = new bool[TileList::getTotalTiles()];
-        for(int i = 0; i < TileList::getTotalTiles(); i++)
-            canBeTile[i] = true;
-        tile = nullptr;
-    }
-Cell::Cell(int xIn, int yIn, int wIn, int hIn, int colIn, int rowIn) {
-        tileSet = false;
-        xPos = xIn;
-        yPos = yIn;
-        width = wIn;
-        height = hIn;
-        col = colIn;
-        row = rowIn;
-        canBeTile = new bool[TileList::getTotalTiles()];
-        for(int i = 0; i < TileList::getTotalTiles(); i++)
-            canBeTile[i] = true;
-        tile = nullptr;
+Cell::Cell(rect *inPlacement, int2D *locIn){
+    tileSet = false;
+    guiPlacement = inPlacement;
+    loc = locIn;
+    canBeTile = new bool[TileList::getTotalTiles()];
+    for(int i = 0; i < TileList::getTotalTiles(); i++)
+        canBeTile[i] = true;
+    tile = nullptr;
+
 }
 // destructor
 Cell::~Cell(){
     delete tile;
     delete canBeTile;
+    delete guiPlacement;
+    delete loc;
 }
 
 
 int Cell::getCol(){
-    return col;
+    return loc->x;
 }
 int Cell::getRow(){
-    return row;
+    return loc->y;
 }
 
 /**
@@ -192,9 +170,19 @@ void Cell::paint(){
     else
         tileColor = WHITE;
     // draw fill
-    DrawRectangle(xPos,yPos,width,height,tileColor);
+    DrawRectangle(
+        guiPlacement->x,
+        guiPlacement->y,
+        guiPlacement->width,
+        guiPlacement->height,
+        tileColor);
     // draw outline
-    DrawRectangleLines(xPos,yPos,width,height,(Color){20,20,20,255});
+    DrawRectangleLines(
+        guiPlacement->x,
+        guiPlacement->y,
+        guiPlacement->width,
+        guiPlacement->height,
+        (Color){20,20,20,255});
 }
 
 
