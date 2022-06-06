@@ -44,15 +44,22 @@ void setupApp(){
     // setup our amounts
     leftMargin = 10;
     topMargin = 10;
-    int2D *latticePos = new int2D{leftMargin,topMargin};
+    int2D *latticePos = new int2D{
+        leftMargin,
+        topMargin
+    };
     int colCount = 70;
     int rowCount = 40;
+    int2D *cellCount = new int2D{
+        colCount,
+        rowCount
+    };
     int cellSize = 18;
     // this sets up the app
     appWidth = leftMargin*2 + cellSize*colCount;
     appHeight = topMargin*2 + cellSize*rowCount;
     // setup the grid
-    grid = new Lattice(latticePos,colCount,rowCount,cellSize);
+    grid = new Lattice(latticePos,cellCount,cellSize);
 
     InitWindow( getWidth(), getHeight(), "Procedural C++");
     SetTargetFPS( FRAMERATE );

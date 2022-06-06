@@ -13,11 +13,11 @@ TileList *Lattice::tiles = nullptr;
  */
 
 // constructor
-Lattice::Lattice(int2D *drawPos, int colCountIn, int rowCountIn, int cellSizeIn) {
+Lattice::Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn) {
     cout << "--> [setting up]: Lattice object" << endl;
     // cell array stuffs
     pos = new int2D{drawPos->x,drawPos->y};
-    cellCount = new int2D{colCountIn, rowCountIn};
+    cellCount = cellCountIn;
     totalCells = (cellCount->x) * (cellCount->y);
     filledCells = 0;
     cellSize = cellSizeIn;

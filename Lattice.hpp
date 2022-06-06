@@ -34,7 +34,7 @@ class Lattice{
     int2D *iterPos;
 
     // constructor
-    Lattice(int2D *drawPos, int colCountIn, int rowCountIn, int cellSizeIn);
+    Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn);
 
     // destructor
     ~Lattice();
