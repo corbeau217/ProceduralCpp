@@ -106,6 +106,9 @@ void Lattice::iterBegin(){
 Cell *Lattice::iterCurrent(){
     return  get(iterPos);
 }
+int2D *Lattice::getIterPos(){
+    return iterPos;
+}
 
 
 /**
@@ -144,12 +147,11 @@ Cell *Lattice::get(int2D *locIn){
  */
 bool Lattice::hasEntropy(){
     // loop through and check entropy
-    for(int x = 0; x < cellCount->x; x++){
-        for(int y = 0; y < cellCount->y; y++){
-            bool currCellEntropy = get(x,y)->hasEntropy();
-            // return true if cell has entropy
-            if(currCellEntropy) return true;
-        }
+    for(iterBegin(); !iterDone(); iterNext()){
+        bool currCellEntropy = iterCurrent()->hasEntropy();
+        // return true if cell has entropy
+        if(currCellEntropy) return true;
+    
     }
     return false;
 }
@@ -163,13 +165,11 @@ int Lattice::getLowestEntropy(){
     // start with highest possible
     int lowestEntropy = TileList::getTotalTiles();
     // loop through and check for something lower
-    for(int x = 0; x < cellCount->x; x++){
-        for(int y = 0; y < cellCount->y; y++){
-            int currCellEntropy = get(x,y)->getEntropy();
-            // only look for low entropy where we havent set the tile already
-            if(currCellEntropy<lowestEntropy && currCellEntropy>0)
-                lowestEntropy = currCellEntropy;
-        }
+    for(iterBegin(); !iterDone(); iterNext()){
+        int currCellEntropy = iterCurrent()->getEntropy();
+        // only look for low entropy where we havent set the tile already
+        if(currCellEntropy<lowestEntropy && currCellEntropy>0)
+            lowestEntropy = currCellEntropy;
     }
     return lowestEntropy;
 }
@@ -184,12 +184,11 @@ int Lattice::getHasEntropyCount(int entropyVal){
     // counter for total matching
     int totalOfEntropyAtVal = 0;
     // loop through and check
-    for(int x = 0; x < cellCount->x; x++){
-        for(int y = 0; y < cellCount->y; y++){
-            int currCellEntropy = get(x,y)->getEntropy();
-            if(currCellEntropy==entropyVal)
-                ++totalOfEntropyAtVal;
-        }
+    for(iterBegin(); !iterDone(); iterNext()){
+        int currCellEntropy = iterCurrent()->getEntropy();
+        if(currCellEntropy==entropyVal)
+            ++totalOfEntropyAtVal;
+    
     }
     return totalOfEntropyAtVal;
 }
@@ -222,16 +221,15 @@ Cell **Lattice::getLowestEntropyList(){
     // keep track of our current place in the array
     int currCount = 0;
     // loop through to find matching cells
-    for(int x = 0; x < cellCount->x; x++){
-        for(int y = 0; y < cellCount->y; y++){
-            // check if it has lowest entropy
-            if(get(x,y)->getEntropy()==lowestEntropy){
-                // add to our array if it does
-                outList[currCount] = get(x,y);
-                //update our tracker
-                ++currCount;
-            }
+    for(iterBegin(); !iterDone(); iterNext()){
+        // check if it has lowest entropy
+        if(iterCurrent()->getEntropy()==lowestEntropy){
+            // add to our array if it does
+            outList[currCount] = iterCurrent();
+            //update our tracker
+            ++currCount;
         }
+        
     }
     return outList;
 }
@@ -419,9 +417,8 @@ void Lattice::paint(){
     if(!builtGrid)
         buildLattice();
     // paint the cells
-    for(int x = 0; x<cellCount->x; x++)
-        for(int y = 0; y < cellCount->y; y++)
-            get(x,y)->paint();
+    for(iterBegin(); !iterDone(); iterNext())
+            iterCurrent()->paint();
 }
 
 Tile *Lattice::getTileOption(int idx){

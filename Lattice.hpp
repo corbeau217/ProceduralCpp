@@ -61,6 +61,11 @@ class Lattice{
      * 
      */
     Cell *iterCurrent();
+    /**
+     * @brief returns the current iterator int2D pointer
+     * 
+     */
+    int2D *getIterPos();
 
 
     /**

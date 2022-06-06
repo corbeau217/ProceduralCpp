@@ -10,8 +10,10 @@
 		"**/*.md": true,
 	},
 	"files.associations": {
+		"*.ejs": "html",
 		"__tuple": "cpp",
 		"array": "cpp",
-		"new": "cpp"
+		"new": "cpp",
+		"*.m": "cpp"
 	}
 }
