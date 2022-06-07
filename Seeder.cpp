@@ -4,6 +4,7 @@ using namespace std;
 
 
 
+unsigned *Seeder::currSeed;
 
 
 /**
@@ -13,14 +14,19 @@ using namespace std;
  * 
  */
 void Seeder::setup(){
+    // setup our asked for seed
+    Seeder::currSeed = new unsigned{CURRENTSEED};
     cout << "--> [Setting up]: Seeder::setup()" << endl;
-    long int seed;
-    if(Seeder::currSeed==0)
-        seed = (long int)time(NULL);
+    unsigned seed;
+    // if we didnt setup an asked for seed
+    if(*Seeder::currSeed==0){
+        seed =  (unsigned)time(NULL);
+        cout << "|| SEED ||--> generated new seed off time" << endl;
+    }
     else
-        seed = Seeder::currSeed;
-    cout << "|| SEED ||  " << seed << "  || (doesn't do much rn)" << endl;
+        seed = *Seeder::currSeed;
     srand(seed);
+    cout << "|| SEED ||  " << seed << "  ||" << endl;
 
     // srand(time(NULL));
 }
@@ -32,8 +38,11 @@ void Seeder::setup(){
  * @return int : value between 0 and bounding
  */
 int Seeder::getRandom(int bounding){
-    if(bounding == 0)
-        return 0;
-    int result = rand() % bounding;
-    return result;
+    int resulter = rand() % bounding;
+    //cout << "["<< resulter <<"]["<< bounding <<"]" <<endl;
+    return resulter;
+}
+
+float Seeder::getFloat(){
+    return (float)rand()/RAND_MAX;
 }

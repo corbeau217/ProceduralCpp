@@ -3,7 +3,7 @@
 
 using namespace std;
 
-
+#define SHOWCELLPROGRESS false
 
 TileList *Lattice::tiles = nullptr;
 
@@ -53,9 +53,7 @@ Lattice::Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn) {
         Lattice::tiles = new TileList();
     }
 
-    // setup RandomSeeder
-    cout << "--> [Hand off]: going to RandomSeeder::setup()" << endl;
-    Seeder::setup();
+    
 }
 
 // destructor
@@ -378,13 +376,7 @@ void Lattice::collapseNext(){
     Cell *nominatedCell = getLowestEntropyCell();
     int x = nominatedCell->getCol();
     int y = nominatedCell->getRow();
-    // // check if collapsing has an update
-    // if(collapse(x,y)){
-    //     ++filledCells;
-    //     propagate(x,y);
-    // }
-    // else
-    //     cout << "collapse didn't need to propagate" << endl;
+    //cout << "seed is [" << Seeder::currSeed << "]" << endl;
     collapse(x,y);
     ++filledCells;
     propagate(x,y);
@@ -397,10 +389,16 @@ void Lattice::collapseNext(){
  */
 void Lattice::buildLattice(){
     cout << "--> [Running]: Lattice::buildLattice()" << endl;
+
+    // setup RandomSeeder
+    cout << "--> [Hand off]: going to RandomSeeder::setup() before build" << endl;
+    Seeder::setup();
+
     // collapse all cells till none left with entropy
     while(hasEntropy()){
         // use this to keep track of how many are done
-        cout << "|| Cells filled: || " << filledCells << '/' << totalCells << endl;
+        if(SHOWCELLPROGRESS)
+            cout << "|| Cells filled: || " << filledCells << '/' << totalCells << endl;
         collapseNext();
     }
     // tell everyone we're done building

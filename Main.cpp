@@ -1,3 +1,4 @@
+#include "Seeder.hpp"
 #include "raylib.h"
 #include "Lattice.hpp"
 #include "Util.hpp"
@@ -6,6 +7,7 @@
 using namespace std;
 
 #define FRAMERATE 15
+
 
 /**
  * @brief main app code

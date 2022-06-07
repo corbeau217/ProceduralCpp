@@ -9,14 +9,15 @@
 using namespace std;
 
 
-#define CURRENTSEED 0
+#define CURRENTSEED 0U
 
 
 
 
 class Seeder{
     public:
-    static const long int currSeed = CURRENTSEED;
+    static unsigned *currSeed;
+    
     
     /**
      * @brief sets up our randomizing agent with a seed
@@ -33,6 +34,13 @@ class Seeder{
      * @return int : value between 0 and bounding
      */
     static int getRandom(int bounding);
+
+    /**
+     * @brief returns float between 0 and 1
+     * 
+     * @return float 
+     */
+    static float getFloat();
     
 };
 
