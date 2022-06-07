@@ -21,12 +21,12 @@ void Seeder::setup(){
     // if we didnt setup an asked for seed
     if(*Seeder::currSeed==0){
         seed =  (unsigned)time(NULL);
-        cout << "|| SEED ||--> generated new seed off time" << endl;
+        cout << "|| SEED ||--> generated new seed off time  ||" << endl;
     }
     else
         seed = *Seeder::currSeed;
     srand(seed);
-    cout << "|| SEED ||  " << seed << "  ||" << endl;
+    cout << "|| SEED ||  " << seed << "U  ||" << endl;
 
     // srand(time(NULL));
 }

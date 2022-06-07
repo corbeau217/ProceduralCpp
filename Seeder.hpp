@@ -9,7 +9,7 @@
 using namespace std;
 
 
-#define CURRENTSEED 0U
+#define CURRENTSEED 0
 
 
 
