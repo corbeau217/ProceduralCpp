@@ -13,10 +13,14 @@ using namespace std;
 
 
 
+typedef struct seedState {
+    unsigned *seed;
+    unsigned *usage;
+} seedState;
 
 class Seeder{
     public:
-    static unsigned *currSeed;
+    static seedState *seed;
     
     
     /**
@@ -41,7 +45,21 @@ class Seeder{
      * @return float 
      */
     static float getFloat();
+
+    /**
+     * @brief returns to a point in the line of a particular seed
+     * 
+     */
+    static void returnToSeed(unsigned seed, unsigned usage);
+    static void returnToSeed(seedState *seed);
+
+    /**
+     * @brief gets pointer for information about the current seed
+     * 
+     */
+    static seedState *getSeedStateCopy();
     
 };
+
 
 #endif

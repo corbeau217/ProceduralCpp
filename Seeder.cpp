@@ -4,7 +4,7 @@ using namespace std;
 
 
 
-unsigned *Seeder::currSeed;
+seedState *Seeder::seed;
 
 
 /**
@@ -15,20 +15,18 @@ unsigned *Seeder::currSeed;
  */
 void Seeder::setup(){
     // setup our asked for seed
-    Seeder::currSeed = new unsigned{CURRENTSEED};
+    seed = new seedState{nullptr, nullptr};
+    seed->seed = new unsigned{CURRENTSEED};
+    seed->usage = new unsigned{0U};
     cout << "--> [Setting up]: Seeder::setup()" << endl;
-    unsigned seed;
     // if we didnt setup an asked for seed
-    if(*Seeder::currSeed==0){
-        seed =  (unsigned)time(NULL);
+    if(*seed->seed==0){
+        *seed->seed = (unsigned)time(NULL);
         cout << "|| SEED ||--> generated new seed off time  ||" << endl;
     }
-    else
-        seed = *Seeder::currSeed;
-    srand(seed);
-    cout << "|| SEED ||  " << seed << "U  ||" << endl;
+    srand(*seed->seed);
+    cout << "|| SEED ||  " << *seed->seed << "U  ||" << endl;
 
-    // srand(time(NULL));
 }
 
 /**
@@ -38,11 +36,42 @@ void Seeder::setup(){
  * @return int : value between 0 and bounding
  */
 int Seeder::getRandom(int bounding){
+
     int resulter = rand() % bounding;
+    ++*seed->usage;
     //cout << "["<< resulter <<"]["<< bounding <<"]" <<endl;
     return resulter;
 }
 
 float Seeder::getFloat(){
-    return (float)rand()/RAND_MAX;
+    float resulter = (float)rand()/RAND_MAX;
+    ++*seed->usage;
+    return resulter;
+}
+
+/**
+ * @brief returns to a point in the line of a particular seed
+ * 
+ */
+void Seeder::returnToSeed(unsigned seedIn, unsigned usage){
+    // change our seed
+    *seed->seed = seedIn;
+    // srand it
+    srand(*seed->seed);
+    // reset our uses
+    *seed->usage = 0U;
+    // spam them out until we reach our usage
+    while(*seed->usage < usage)
+        getRandom(0);
+}
+void Seeder::returnToSeed(seedState *seedIn){
+    returnToSeed(*seedIn->seed, *seedIn->usage);
+}
+
+/**
+ * @brief gets pointer for information about the current seed
+ * 
+ */
+seedState *Seeder::getSeedStateCopy(){
+    return new seedState{seed->seed, seed->usage};
 }
