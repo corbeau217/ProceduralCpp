@@ -20,6 +20,7 @@ using namespace std;
  */
 class Lattice{
     public:
+    
     static TileList *tiles;
     // our cell grid
     int2D *pos;

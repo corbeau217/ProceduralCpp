@@ -1,4 +1,5 @@
 #include "Lattice.hpp"
+#include "Lib.hpp"
 #include <iostream>
 
 using namespace std;
@@ -392,7 +393,7 @@ void Lattice::buildLattice(){
 
     // setup RandomSeeder
     cout << "--> [Hand off]: going to RandomSeeder::setup() before build" << endl;
-    Seeder::setup();
+    Seeder::setup(Lib::getSeed());
 
     // collapse all cells till none left with entropy
     while(hasEntropy()){

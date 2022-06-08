@@ -2,6 +2,9 @@
 #include "raylib.h"
 #include "Lattice.hpp"
 #include "Util.hpp"
+#include "Lib.hpp"
+#include <fstream>
+#include <string>
 #include <iostream>
 
 using namespace std;
@@ -9,20 +12,10 @@ using namespace std;
 #define FRAMERATE 15
 
 
+
+
 /**
  * @brief main app code
- * 
- * 
- * 
- * TODO: need to change the generation code to be procedurally doing sections at a time
- *         using that idea of biomes etc from before
- * 
- * 
- * 
- * TODO: (after) setup weights for allowed adjacency rather than boolean values
- * 
- * TODO: need to setup with being able to hit space or something and generate a new lattice
- * 
  * 
  * 
  */
@@ -43,6 +36,8 @@ int getHeight(){
 
 void setupApp(){
     cout << "--> Setting up app" << endl;
+    // tell lib to setup
+    Lib::setup();
     // setup our amounts
     leftMargin = 10;
     topMargin = 10;
@@ -63,13 +58,24 @@ void setupApp(){
     // setup the grid
     grid = new Lattice(latticePos,cellCount,cellSize);
 
-    InitWindow( getWidth(), getHeight(), "Procedural C++");
+    string appTitle  = "Procedural C++ map, seed: ";
+    appTitle += to_string(Lib::getSeed());
+
+    InitWindow( getWidth(), getHeight(), appTitle.c_str());
     SetTargetFPS( FRAMERATE );
 }
 
 void framePaint(){
     ClearBackground(GRAY);
     grid->paint();
+}
+
+void cleanupApp(){
+    cout << "Cleaning up app" << endl;
+    Lib::closingApp();
+    //TODO
+    cout << "[nothing to report in cleanup lel]" << endl
+            << "[slap a TODO here]"                 << endl;
 }
 
 void drawLoop(){
@@ -80,13 +86,7 @@ void drawLoop(){
         framePaint();
         EndDrawing();
     }
-}
-
-void cleanupApp(){
-    cout << "Cleaning up app" << endl;
-    //TODO
-    cout << "[nothing to report in cleanup lel]" << endl
-            << "[slap a TODO here]"                 << endl;
+    cleanupApp();
 }
 
 int main(){// main landing point

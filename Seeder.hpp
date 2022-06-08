@@ -26,10 +26,9 @@ class Seeder{
     /**
      * @brief sets up our randomizing agent with a seed
      * 
-     * meant to let us use the same seed again but it doesnt work vry sad
      * 
      */
-    static void setup();
+    static void setup(unsigned seedIn);
 
     /**
      * @brief Get random number within bounding

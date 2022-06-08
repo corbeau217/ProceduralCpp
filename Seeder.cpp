@@ -13,21 +13,21 @@ seedState *Seeder::seed;
  * meant to let us use the same seed again but it doesnt work vry sad
  * 
  */
-void Seeder::setup(){
+void Seeder::setup(unsigned seedIn){
     // setup our asked for seed
-    seed = new seedState{nullptr, nullptr};
-    seed->seed = new unsigned{CURRENTSEED};
-    seed->usage = new unsigned{0U};
+    seed = new seedState{
+            new unsigned{seedIn},
+            new unsigned{0U}
+        };
+    // say we're setting up
     cout << "--> [Setting up]: Seeder::setup()" << endl;
-    // if we didnt setup an asked for seed
-    if(*seed->seed==0){
-        *seed->seed = (unsigned)time(NULL);
-        cout << "|| SEED ||--> generated new seed off time  ||" << endl;
-    }
     srand(*seed->seed);
+
+    // say in console for copypasta
     cout << "|| SEED ||  " << *seed->seed << "U  ||" << endl;
 
 }
+
 
 /**
  * @brief Get random number within bounding
