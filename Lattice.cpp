@@ -16,14 +16,18 @@ TileList *Lattice::tiles = nullptr;
 // constructor
 Lattice::Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn) {
     cout << "--> [setting up]: Lattice object" << endl;
-    // cell array stuffs
-    pos = new int2D{drawPos->x,drawPos->y};
+    // draw position member
+    pos = new int2D{drawPos->x, drawPos->y};
+    // cell col/row counts
     cellCount = cellCountIn;
+    // total cell count
     totalCells = (cellCount->x) * (cellCount->y);
+    // initialise the total filled var
     filledCells = 0;
+    // cell width/height var
     cellSize = cellSizeIn;
     // iter handle
-    iterPos = new int2D{0,0};
+    iterPos = new int2D{0, 0};
 
     // have a colCount length array of Cell** 
     cout << "--> [Generating]: cells pointer array" << endl;
@@ -36,8 +40,8 @@ Lattice::Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn) {
             cells[x][y] = new Cell(
                 // cell ui placement
                 new rect{
-                    pos->x + x*cellSize,
-                    pos->y + y*cellSize,
+                    (pos->x) + x*cellSize,
+                    (pos->y) + y*cellSize,
                     cellSize,
                     cellSize
                 },
@@ -66,6 +70,8 @@ Lattice::~Lattice(){
         delete cells[x];
     }
     delete cells;
+    // need to add new pointers here
+    // todo
 }
 
 
@@ -76,7 +82,7 @@ Lattice::~Lattice(){
  * @return false : otherwise
  */
 bool Lattice::iterDone(){
-    return iterPos->y >= cellCount->y-1 && iterPos->x >= cellCount->x-1;
+    return iterPos->y >= cellCount->y;
 }
 /**
  * @brief move to next location

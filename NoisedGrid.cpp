@@ -13,15 +13,21 @@ class NoisedGrid {
     public:
     float ***grid;
     int2D *dimensions;
+    seedState *gridSeed;
 
     // constructor
     NoisedGrid(int2D *dimensionsIn){
-        // setup our variables
+        // copy dimensions
         dimensions = dimensionsIn;
+        // copy seed
+        gridSeed = Seeder::getSeedStateCopy();
+        // make array of pointer arrays
         grid = new float**[dimensions->x];
+        // loop through each pointer array and add the elements to it
         for(int x = 0; x < dimensions->x; x++){
             grid[x] = new float*[dimensions->y];
             for(int y = 0; y < dimensions->y; y++){
+                // set as nullptr for now
                 grid[x][y] = nullptr;
                 grid[x][y] = getNextNoisyFloat();
 
@@ -39,6 +45,7 @@ class NoisedGrid {
         }
         delete grid;
         delete dimensions;
+        delete gridSeed;
     }
 
     /**

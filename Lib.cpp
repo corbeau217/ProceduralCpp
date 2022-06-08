@@ -1,4 +1,5 @@
 #include "Lib.hpp"
+#include "Util.hpp"
 #include <fstream>
 #include <filesystem>
 #include <iostream>
@@ -87,7 +88,7 @@ void Lib::getSeedFromSettingsFile(){
             seedString = seedString.substr(0,seedString.length());
         // now convert from string to unsigned int
         // use nullptr for 2nd arg bc it wants yucky stuff that i cbf with
-        seedFromFile = new unsigned{strtoul(seedString.c_str(), nullptr, 10)};
+        seedFromFile = Util::strtou(seedString);
     }
     else
         seedFromFile = new unsigned{0U};
@@ -118,7 +119,7 @@ void Lib::setup(){
  */
 void Lib::closingApp(){
     //todo
-    delete seedFromFile;
+    //delete seedFromFile;
 }
 
 unsigned Lib::getSeed(){
