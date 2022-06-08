@@ -21,6 +21,7 @@ namespace fs = std::filesystem;
 using namespace std;
 
 
+#define SETTINGS_FIELD_COUNT 10
 
 
 // filename
@@ -28,6 +29,7 @@ using namespace std;
 
 // this is set to whatever the seed is in our settings file
 unsigned *Lib::seedFromFile;
+string ***Lib::settingsList;
 
 /**
  * @brief return if there is a settings file already created
@@ -53,6 +55,9 @@ void Lib::createSettingsFile(){
     // write out our standard stuff
     f << "## change 0 in seed value to unsigned int ##" << endl;
     f << "##     to generate a specific map seed    ##" << endl;
+    // maybe we should setup a way to new settings etc and have the
+    //      file generated based on a dictionary of field names and
+    //      default values
     f << "seed=0" << endl;
 
     // close the filed
@@ -92,6 +97,7 @@ void Lib::getSeedFromSettingsFile(){
     }
     else
         seedFromFile = new unsigned{0U};
+    settingsFile.close();
 }
 
 /**
@@ -99,14 +105,18 @@ void Lib::getSeedFromSettingsFile(){
  * 
  */
 void Lib::setup(){
+    setupSettingsFields();
+    scrapeSettingsFile();
 
     // create settings file if one doesnt exist
     if(!settingsFileExists())
         createSettingsFile();
 
     // then access it to setup our seed
-    if(settingsFileExists())
+    if(settingsFileExists()){
+        scrapeSettingsFile();
         getSeedFromSettingsFile();
+    }
     else
         // to handle failed to create
         seedFromFile = new unsigned{0U};
@@ -133,4 +143,84 @@ unsigned Lib::getSeed(){
 
     // done
     return *seedFromFile;
+}
+
+/**
+ * @brief returns the count of legitimate fields in the settings
+ *      file
+ * 
+ */
+int Lib::settingsFileFieldCount(){
+    // check for file doesnt exist and return 0 elements
+    if(!settingsFileExists())
+        return 0;
+}
+
+int Lib::settingsFieldCount(){
+    return SETTINGS_FIELD_COUNT;
+}
+
+/**
+ * @brief scrapes the settings file, ignoring lines with double
+ *      # characters at the start, then has a 2d array of string
+ *      pointers that is returned 
+ * 
+ * @return string*** 
+ */
+void Lib::scrapeSettingsFile(){
+    // check for file doesnt exist and return nullptr
+    if(!settingsFileExists())
+        settingsList = nullptr;
+    // see if we need to setup the list first
+    if(!settingsList || settingsList==nullptr)
+        setupSettingsFields();
+    // now we fill it with values from the file
+    // open the file
+    fstream settingsFile;
+    settingsFile.open(OUR_SETTINGS_FILENAME, ios::in);
+    // check we opened
+    if(settingsFile.is_open()){
+        // current line container
+        string currLine;
+        int fieldsHandled = 0;
+        while(getline(settingsFile, currLine)){
+            // ignore empty/short lines
+            if(currLine.length() > 2)
+                // ignore our placeholder comments
+                if( currLine.find("##") == -1U){
+                    // not a comment line
+                    settingsList[fieldsHandled][0] = new string{currLine.c_str()};
+                    // check we have '=' in our line
+                    if((*settingsList[fieldsHandled][0]).find("=") != -1){
+                        // yucky string manipulation, we could do this better with hash and regex
+                        // shave off before the =
+                        settingsList[fieldsHandled][1] = new string{
+                                (*settingsList[fieldsHandled][0]).substr(
+                                        (*settingsList[fieldsHandled][0]).find("=")+1
+                                    )
+                            };
+                        // shave off after the =
+                        settingsList[fieldsHandled][0] = new string{
+                                (*settingsList[fieldsHandled][0]).substr(
+                                         0,
+                                        (*settingsList[fieldsHandled][0]).find("=")
+                                    )
+                            };
+                    }
+                } 
+        }
+    }
+    settingsFile.close();
+}
+
+void Lib::setupSettingsFields(){
+    int fieldCount = settingsFieldCount();
+    // now make the list
+    settingsList = new string**[fieldCount];
+    for(int i = 0; i < fieldCount; i++){
+        settingsList[i] = new string*[2];
+        settingsList[i][0] = new string{""};
+        settingsList[i][1] = new string{""};
+    }
+    
 }

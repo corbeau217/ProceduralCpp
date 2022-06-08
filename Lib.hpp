@@ -12,6 +12,7 @@ class Lib{
     public:
     // this is set to whatever the seed is in our settings file
     static unsigned *seedFromFile;
+    static string ***settingsList;
     
 
     /**
@@ -52,6 +53,24 @@ class Lib{
      */
     static unsigned getSeed();
 
+    /**
+     * @brief returns the count of legitimate fields in the settings
+     *      file
+     * 
+     */
+    static int settingsFileFieldCount();
+    static int settingsFieldCount();
+
+    static void setupSettingsFields();
+
+    /**
+     * @brief scrapes the settings file, ignoring lines with double
+     *      # characters at the start, then has a 2d array of string
+     *      pointers that is returned 
+     * 
+     * @return string*** 
+     */
+    static void scrapeSettingsFile();
 
 };
 
