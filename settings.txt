@@ -1,3 +1,7 @@
 ## change 0 in seed value to unsigned int ##
 ##     to generate a specific map seed    ##
-seed=1654656848U
+
+## nice seeds:
+## 1654656848U
+## 1654657462U
+seed=1654657462U
