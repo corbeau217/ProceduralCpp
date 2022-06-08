@@ -11,7 +11,7 @@ using namespace std;
 
 #define FRAMERATE 15
 
-
+#define FRAMESTOCOOLDOWNREROLL FRAMERATE*2.5
 
 
 /**
@@ -25,6 +25,11 @@ int appWidth;
 int appHeight;
 int leftMargin;
 int topMargin;
+bool recentlyPressedSpace;
+bool libSetup;
+bool initWindowDone;
+int framesSinceReroll;
+string appTitle;
 Lattice *grid;
 
 int getWidth(){
@@ -34,10 +39,40 @@ int getHeight(){
     return appHeight;
 }
 
+/**
+ * @brief called in setupApp() if window doesnt exist
+ * 
+ */
+void makeWindow(){
+    InitWindow( getWidth(), getHeight(), appTitle.c_str());
+    SetTargetFPS( FRAMERATE );
+    initWindowDone = true;
+}
+
+/**
+ * @brief called in setupApp() if a window already exists
+ * 
+ */
+void updateWindow(){
+    SetWindowTitle(appTitle.c_str());
+}
+
+/**
+ * @brief called in setupApp() if lib isnt setup
+ * 
+ */
+void initLib(){
+    Lib::setup();
+    libSetup = true;
+}
+
 void setupApp(){
     cout << "--> Setting up app" << endl;
-    // tell lib to setup
-    Lib::setup();
+    
+    if (!libSetup)
+        initLib();
+    // else
+    //     *Lib::newGenerateOnClose = false;
     // setup our amounts
     leftMargin = 10;
     topMargin = 10;
@@ -58,16 +93,24 @@ void setupApp(){
     // setup the grid
     grid = new Lattice(latticePos,cellCount,cellSize);
 
-    string appTitle  = "Procedural C++ map, seed: ";
+    appTitle  = "Procedural C++ map, seed: ";
     appTitle += to_string(Lib::getSeed());
 
-    InitWindow( getWidth(), getHeight(), appTitle.c_str());
-    SetTargetFPS( FRAMERATE );
+    if(!initWindowDone)
+        makeWindow();
+    else
+        updateWindow();
 }
 
 void framePaint(){
     ClearBackground(GRAY);
     grid->paint();
+    if(recentlyPressedSpace){
+        if(framesSinceReroll < 1)
+            recentlyPressedSpace = false;
+        else
+            --framesSinceReroll;
+    }
 }
 
 void cleanupApp(){
@@ -78,10 +121,20 @@ void cleanupApp(){
             << "[slap a TODO here]"                 << endl;
 }
 
+void handleReroll(){
+    recentlyPressedSpace = true;
+    framesSinceReroll = FRAMESTOCOOLDOWNREROLL;
+    cout << "[REROLLING LATTICE]" << endl;
+    Lib::handleRerollLattice();
+    setupApp();
+}
+
 void drawLoop(){
     cout << "--> Starting Main::drawLoop()" << endl;
     // handles the draw loop
     while( !WindowShouldClose() ){
+        if(IsKeyDown(KEY_SPACE) && !recentlyPressedSpace)
+            handleReroll();
         BeginDrawing();
         framePaint();
         EndDrawing();
@@ -89,10 +142,19 @@ void drawLoop(){
     cleanupApp();
 }
 
-int main(){// main landing point
-    cout << "--> Executing Main::main()" << endl;
+void startApp(){
     setupApp();
     drawLoop();
     cleanupApp();
+    // if(Lib::isResurrectionEnabled())
+    //     startApp();
+}
+
+int main(){// main landing point
+    cout << "--> Executing Main::main()" << endl;
+    recentlyPressedSpace = false;
+    libSetup = false;
+    initWindowDone = false;
+    startApp();
     return 0;
 }

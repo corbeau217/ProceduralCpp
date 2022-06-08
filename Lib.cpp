@@ -30,6 +30,7 @@ using namespace std;
 // this is set to whatever the seed is in our settings file
 unsigned *Lib::seedFromFile;
 string ***Lib::settingsList;
+bool *Lib::newGenerateOnClose;
 
 /**
  * @brief return if there is a settings file already created
@@ -105,6 +106,7 @@ void Lib::getSeedFromSettingsFile(){
  * 
  */
 void Lib::setup(){
+    newGenerateOnClose = new bool{false};
     setupSettingsFields();
     scrapeSettingsFile();
 
@@ -223,4 +225,21 @@ void Lib::setupSettingsFields(){
         settingsList[i][1] = new string{""};
     }
     
+}
+
+/**
+ * @brief hand off to tidy up and variables 
+ * 
+ */
+void Lib::handleRerollLattice(){
+    *seedFromFile = (unsigned)time(NULL);
+    *newGenerateOnClose = true;
+}
+
+bool Lib::isResurrectionEnabled(){
+    if(!newGenerateOnClose
+        ||newGenerateOnClose==nullptr
+        ||!(*newGenerateOnClose))
+        return false;
+    return true;
 }

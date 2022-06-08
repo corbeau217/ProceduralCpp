@@ -13,7 +13,14 @@ class Lib{
     // this is set to whatever the seed is in our settings file
     static unsigned *seedFromFile;
     static string ***settingsList;
+    static bool *newGenerateOnClose;
     
+    /**
+     * @brief hand off to tidy up and variables 
+     * 
+     */
+    static void handleRerollLattice();
+    static bool isResurrectionEnabled();
 
     /**
      * @brief return if there is a settings file already created
@@ -71,6 +78,8 @@ class Lib{
      * @return string*** 
      */
     static void scrapeSettingsFile();
+
+
 
 };
 

@@ -1,3 +1,5 @@
 ## change 0 in seed value to unsigned int ##
 ##     to generate a specific map seed    ##
-seed=1654672471U
+## 1654672471U
+## 1654678569U - nice deep area with islands
+seed=0
