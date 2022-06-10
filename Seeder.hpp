@@ -43,7 +43,7 @@ class Seeder{
      * 
      * @return float 
      */
-    static float getFloat();
+    static float getFloat(float maximum);
 
     /**
      * @brief returns to a point in the line of a particular seed

@@ -43,8 +43,8 @@ int Seeder::getRandom(int bounding){
     return resulter;
 }
 
-float Seeder::getFloat(){
-    float resulter = (float)rand()/RAND_MAX;
+float Seeder::getFloat(float maximum){
+    float resulter = (float)rand()/RAND_MAX*maximum;
     ++*seed->usage;
     return resulter;
 }

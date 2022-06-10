@@ -1,6 +1,10 @@
 #include "Util.hpp"
 #include "Seeder.hpp"
 
+
+
+
+
 /**
  * @brief we tryna make a noisy grid of floats i guess
  * 
@@ -11,25 +15,31 @@
 
 class NoisedGrid {
     public:
-    float ***grid;
+    float ****grid;
     int2D *dimensions;
     seedState *gridSeed;
+    float minimum;
+    float maximum;
+    float floatPerElem;
 
     // constructor
-    NoisedGrid(int2D *dimensionsIn){
+    NoisedGrid(int2D *dimensionsIn, 
+    float minIn, float maxIn, float elemCountIn){
         // copy dimensions
         dimensions = dimensionsIn;
+        floatPerElem = elemCountIn;
         // copy seed
         gridSeed = Seeder::getSeedStateCopy();
         // make array of pointer arrays
-        grid = new float**[dimensions->x];
+        grid = new float***[dimensions->x];
         // loop through each pointer array and add the elements to it
         for(int x = 0; x < dimensions->x; x++){
-            grid[x] = new float*[dimensions->y];
+            grid[x] = new float**[dimensions->y];
             for(int y = 0; y < dimensions->y; y++){
                 // set as nullptr for now
-                grid[x][y] = nullptr;
-                grid[x][y] = getNextNoisyFloat();
+                grid[x][y] = new float*[floatPerElem];
+                for(int z = 0; z < floatPerElem; z++)
+                    grid[x][y][z] = getNextNoisyFloat();
 
             }
         }
@@ -39,6 +49,9 @@ class NoisedGrid {
     ~NoisedGrid(){
         for(int x = 0; x< dimensions->x; x++){
             for(int y = 0; y < dimensions->y; y++){
+                for(int z = 0; z < floatPerElem; z++){
+                    delete grid[x][y][z];
+                }
                 delete grid[x][y];
             }
             delete grid[x];
@@ -53,21 +66,26 @@ class NoisedGrid {
      * 
      */
     float *getNextNoisyFloat(){
-        float *returnable =nullptr;
-        *returnable = 0; //TODO
+        float *returnable = new float{
+                minimum + Seeder::getFloat(maximum-minimum)
+            };
         return returnable;
     }
 
     /**
      * @brief getters
      * 
-     * @param loc int2D of the location to get
-     * @return float* returned element pointer
      */
-    float *get(int2D *loc){
+    float **get(int2D *loc){
         return grid[loc->x][loc->y];
     }
-    float *get(int x, int y){
+    float **get(int x, int y){
         return get(new int2D{x,y});
+    }
+    float *get(int2D *loc, int elem){
+        return get(loc)[elem];
+    }
+    float *get(int x, int y, int z){
+        return get(x,y)[z];
     }
 };

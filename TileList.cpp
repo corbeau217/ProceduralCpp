@@ -23,7 +23,9 @@ TileList::TileList(){
     addTileOption( new Tile("Grass", (Color){65,169,76,255}) );
     getTileOption( TILEIDX_GRASS )
             ->setTileIdx( TILEIDX_GRASS )
+            ->setDisallowsAdjacency( TILEIDX_WATER   )
             ->setDisallowsAdjacency( TILEIDX_OCEAN  )
+            ->setDisallowsAdjacency( TILEIDX_SAND   )
             ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
 
     // Sand
@@ -33,6 +35,7 @@ TileList::TileList(){
             ->setTileIdx( TILEIDX_SAND )
             ->setDisallowsAdjacency( TILEIDX_OCEAN  )
             ->setDisallowsAdjacency( TILEIDX_FOREST )
+            ->setDisallowsAdjacency( TILEIDX_GRASS   )
             ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
 
     // Water
@@ -42,6 +45,7 @@ TileList::TileList(){
             ->setTileIdx( TILEIDX_WATER )
             ->setDisallowsAdjacency( TILEIDX_GRASS  )
             ->setDisallowsAdjacency( TILEIDX_FOREST )
+            ->setDisallowsAdjacency( TILEIDX_PLAINS )
             ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  );
 
     // Ocean
@@ -81,6 +85,7 @@ TileList::TileList(){
     addTileOption( new Tile("Plains",(Color){204,235,197,255}) );
     getTileOption( TILEIDX_PLAINS )
             ->setTileIdx( TILEIDX_PLAINS )
+            ->setDisallowsAdjacency( TILEIDX_WATER  )
             ->setDisallowsAdjacency( TILEIDX_OCEAN   )
             ->setDisallowsAdjacency( TILEIDX_DEEPOCEAN  )
             ->setDisallowsAdjacency( TILEIDX_FOREST  );
