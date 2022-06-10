@@ -1,19 +1,19 @@
 #include "Util.hpp"
+#include "raylib.h"
 #include "Seeder.hpp"
 
 /**
- * @brief we tryna make a noisy grid of floats i guess
+ * @brief this is basically just perlin noise generator
  * 
- * TODO: setup with templates and a function pointer for getting the next element to fill with
- * 
- *      maybe we could set this up with a "doToEach" function that takes a function to apply to every element
  */
-
 class NoisedGrid {
     public:
-    float ***grid;
-    int2D *dimensions;
+    // seed while making
     seedState *gridSeed;
+    // grid of vectors
+    Vector2 ***grid;
+    
+    int2D *dimensions; // pixel width/height
 
     // constructor
     NoisedGrid(int2D *dimensionsIn){

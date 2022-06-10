@@ -7,6 +7,12 @@
 
 using namespace std;
 
+
+/**
+ * @brief we should look into templates and generics for refactoring
+ *      these multiple similar elements
+ * 
+ */
 typedef struct int2D {
     int x;
     int y;
@@ -18,6 +24,7 @@ typedef struct rect {
     int width;
     int height;
 } rect;
+
 
 class Util{
     public:

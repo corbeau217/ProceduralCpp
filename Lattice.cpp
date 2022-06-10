@@ -11,6 +11,9 @@ TileList *Lattice::tiles = nullptr;
 /**
  * @brief try with using array of indexes for dealing with things or using an array of Cell pointers
  * 
+ * TODO: look into c++ form of functional interfaces for
+ *       set this up with a "doToEach" function that takes 
+ *      a function to apply to every element
  */
 
 // constructor

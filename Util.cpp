@@ -17,3 +17,5 @@ unsigned *Util::strtou(string numberStr){
     unsigned long resulter = strtoul(numberStr.c_str(), nullptr, 10);
     return new unsigned{(unsigned)resulter};
 }
+
+
