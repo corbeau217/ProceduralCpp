@@ -52,7 +52,7 @@ Lattice::Lattice(int2D *drawPos, int2D *cellCountIn, int cellSizeIn) {
         }
     }
     builtGrid = false;
-
+    
     //TODO
 }
 
@@ -150,7 +150,7 @@ void Lattice::buildLattice(){
 
     // setup RandomSeeder
     cout << "--> [Hand off]: going to RandomSeeder::setup() before build" << endl;
-    Seeder::setup(Lib::getSeed());
+    latticeSeeder = new Seeder(Lib::getSeed());
 
     //TODO
 

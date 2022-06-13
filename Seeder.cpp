@@ -1,77 +1,160 @@
+/**
+ * @file Seeder.cpp
+ * @author corbeau217 (https://github.com/corbeau217)
+ * @brief 
+ * @version 0.1
+ * @date 2022-06-14
+ * 
+ * https://github.com/corbeau217/cpp_seeder
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
+// include our header
 #include "Seeder.hpp"
 
-using namespace std;
+// --------------------------------------------
+// --------------------------------------------
+// static
+// --------------------------------------------
+// declare static variables
 
+Seeder *Seeder::inuse_seed = nullptr;
 
-
-seedState *Seeder::seed;
-
-
-/**
- * @brief sets up our randomizing agent with a seed
- * 
- * meant to let us use the same seed again but it doesnt work vry sad
- * 
- */
-void Seeder::setup(unsigned seedIn){
-    // setup our asked for seed
-    seed = new seedState{
-            new unsigned{seedIn},
-            new unsigned{0U}
-        };
-    // say we're setting up
-    cout << "--> [Setting up]: Seeder::setup()" << endl;
-    srand(*seed->seed);
-
-    // say in console for copypasta
-    cout << "|| SEED ||  " << *seed->seed << "U  ||" << endl;
-
-}
-
+// --------------------------------------------
+// declare static member functions
 
 /**
- * @brief Get random number within bounding
+ * @brief changes the active seed to input param using srand
  * 
- * @param bounding : return is less than this value
- * @return int : value between 0 and bounding
+ * @param seedToChangeTo 
  */
-int Seeder::getRandom(int bounding){
-
-    int resulter = rand() % bounding;
-    ++*seed->usage;
-    //cout << "["<< resulter <<"]["<< bounding <<"]" <<endl;
-    return resulter;
-}
-
-float Seeder::getFloat(){
-    float resulter = (float)rand()/RAND_MAX;
-    ++*seed->usage;
-    return resulter;
+void Seeder::changeActiveSeed(Seeder *seedToChangeTo){
+    // make sure it's declared
+    if(seedToChangeTo)
+        inuse_seed = seedToChangeTo;
+    // now check if we have an active seeder
+    if(inuse_seed!=nullptr)
+        // then srand() where we want to be
+        srand(inuse_seed->getCurrentSeed());
+        
 }
 
 /**
- * @brief returns to a point in the line of a particular seed
+ * @brief generates the seed iteration, using 
+ *      SEED_ITERSTEP_MAX as bounding value
+ * 
+ * gets the first unsigned value off our seedOrigin_in and
+ *      then returns the mod(val,SEED_ITERSTEP_MAX)
+ */
+unsigned Seeder::generateSeedIterationStep(unsigned seedOrigin_in){
+    // change random seed to the seedOrigin_in
+    srand(seedOrigin_in);
+    // generate a value based off that and return
+    return (unsigned)(rand()%SEED_ITERSTEP_MAX);
+}
+
+// --------------------------------------------
+// --------------------------------------------
+// instance
+// --------------------------------------------
+// declare instance constructors
+
+Seeder::Seeder(){
+    // set seedOrigin to DEFAULT_SEED_ORIGIN
+    seedOrigin = DEFAULT_SEED_ORIGIN;
+    // set our seedStep to DEFAULT_SEED_STEP
+    seedStep = DEFAULT_SEED_STEP;
+    // set our seedIteration to DEFAULT_SEED_ITER
+    seedIteration = DEFAULT_SEED_ITER;
+    // now we need to generate the seedStep based off seedOrigin
+    seedStep = Seeder::generateSeedIterationStep(seedOrigin);
+}
+Seeder::Seeder(unsigned seedOrigin_in){
+    // set seedOrigin to DEFAULT_SEED_ORIGIN
+    seedOrigin = seedOrigin_in;
+    // set our seedStep to DEFAULT_SEED_STEP
+    seedStep = DEFAULT_SEED_STEP;
+    // set our seedIteration to DEFAULT_SEED_ITER
+    seedIteration = DEFAULT_SEED_ITER;
+    // now we need to generate the seedStep based off seedOrigin
+    seedStep = Seeder::generateSeedIterationStep(seedOrigin);
+}
+Seeder::Seeder(unsigned seedOrigin_in, unsigned seedStep_in, unsigned seedIteration_in){
+    // set seedOrigin to DEFAULT_SEED_ORIGIN
+    seedOrigin = seedOrigin_in;
+    // set our seedStep to DEFAULT_SEED_STEP
+    seedStep = seedStep_in;
+    // set our seedIteration to DEFAULT_SEED_ITER
+    seedIteration = seedIteration_in;
+}
+
+// --------------------------------------------
+// declare instance destructor
+
+Seeder::~Seeder(){
+    //TODO: no pointers to delete yet
+}
+
+// --------------------------------------------
+// declare instance member functions
+
+/**
+ * @brief changes the active seed to this
  * 
  */
-void Seeder::returnToSeed(unsigned seedIn, unsigned usage){
-    // change our seed
-    *seed->seed = seedIn;
-    // srand it
-    srand(*seed->seed);
-    // reset our uses
-    *seed->usage = 0U;
-    // spam them out until we reach our usage
-    while(*seed->usage < usage)
-        getRandom(0);
-}
-void Seeder::returnToSeed(seedState *seedIn){
-    returnToSeed(*seedIn->seed, *seedIn->usage);
+void Seeder::makeActive(){
+    Seeder::changeActiveSeed(this);
 }
 
 /**
- * @brief gets pointer for information about the current seed
+ * @brief compare this to otherSeeder
+ * 
+ * @param otherSeeder 
+ * @return true if same
+ * @return false otherwise
+ */
+bool Seeder::equals(Seeder *otherSeeder){
+    // check otherSeeder is real
+    if(otherSeeder)
+        // check it's not nullptr
+        if(otherSeeder!=nullptr)
+            if(
+                    this->seedOrigin    == otherSeeder->seedOrigin
+                &&  this->seedStep      == otherSeeder->seedStep
+                &&  this->seedIteration == otherSeeder->seedIteration
+            )
+                return true;
+    return false;
+}
+
+/**
+ * @brief this is for generating the value we use in srand
+ * 
+ * @return unsigned : value to be put into the c++ srand() func
+ */
+unsigned Seeder::getCurrentSeed(){
+    // the offset from our seedOrigin
+    unsigned seedOffset = seedStep * seedIteration;
+    // return the new seed to use
+    return seedOrigin + seedOffset;
+}
+
+/**
+ * @brief for getting the unsigned value to use
  * 
  */
-seedState *Seeder::getSeedStateCopy(){
-    return new seedState{seed->seed, seed->usage};
+unsigned Seeder::getNextRandom(){
+    // force this seed to be active, which then redoes srand()
+    //      to this->getCurrentSeed()
+    makeActive();
+    
+    // now generate a rand()
+    unsigned nextRandom = rand();
+
+    // update our iteration count
+    this->seedIteration += 1;
+
+    return nextRandom;
 }

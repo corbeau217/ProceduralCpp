@@ -19,7 +19,8 @@ using namespace std;
  */
 class Lattice{
     public:
-    
+    // lattice seeder
+    Seeder *latticeSeeder;
     // our cell grid
     int2D *pos;
     int2D *cellCount;

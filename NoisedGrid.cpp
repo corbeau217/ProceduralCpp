@@ -14,18 +14,18 @@
 class NoisedGrid {
     public:
     // seed while making
-    seedState *gridSeed;
+    Seeder *gridSeed;
     // grid of vectors
     Vector2 ***perlinVectors;
 
     int2D *dimensions; // pixel width/height
 
     // constructor
-    NoisedGrid(int2D *dimensionsIn, int stepSize){
+    NoisedGrid(int2D *resolutionDimensions, int grad_period_in, unsigned seed_val){
         // copy dimensions
-        dimensions = dimensionsIn;
+        dimensions = resolutionDimensions;
         // copy seed
-        gridSeed = Seeder::getSeedStateCopy();
+        gridSeed = new Seeder(seed_val);
         // make array of pointer arrays
         perlinVectors = new Vector2**[dimensions->x];
         // loop through each pointer array and add the elements to it
@@ -55,9 +55,9 @@ class NoisedGrid {
      * @brief Get the next noisy float var
      * 
      */
-    float *getNextNoisyFloat(){
-        float *returnable =nullptr;
-        *returnable = 0; //TODO
+    Vector2 *getNextNoisyGradient(){
+        Vector2 *returnable =nullptr;
+        *returnable = {0,0}; //TODO
         return returnable;
     }
 

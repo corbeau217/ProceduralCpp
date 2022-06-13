@@ -1,64 +1,146 @@
+/**
+ * @file Seeder.hpp
+ * @author corbeau217 (https://github.com/corbeau217)
+ * @brief 
+ * @version 0.1
+ * @date 2022-06-14
+ * 
+ * https://github.com/corbeau217/cpp_seeder
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 // header guard to stop redefining
 #ifndef SEEDER_HPP
 #define SEEDER_HPP
 
+// c++ includes
 #include <time.h>
 #include <iostream>
 #include <chrono>
 
+// to shorten our definitions
 using namespace std;
 
+// default value for seed origin
+#define DEFAULT_SEED_ORIGIN (unsigned)time(NULL)
+// default value for seed step
+#define DEFAULT_SEED_STEP 1
+// default value for seed iteration count
+#define DEFAULT_SEED_ITER 0
 
-#define CURRENTSEED 0
+// bounds for how much a seed steps by
+#define SEED_ITERSTEP_MAX 100
 
-
-
-typedef struct seedState {
-    unsigned *seed;
-    unsigned *usage;
-} seedState;
-
+/**
+ * @brief interface for RNG system
+ * 
+ * this can be bricked if srand() or rand() is called 
+ *      seperate to this system so care should be taken
+ *      to handle this
+ * 
+ * error handling could just update it every time we
+ *      generate to avoid this instead of checking instead
+ * 
+ */
 class Seeder{
     public:
-    static seedState *seed;
+    // --------------------------------------------
+    // --------------------------------------------
+    // static
+    // --------------------------------------------
+    // static variables
     
+    // currently active seed
+    static Seeder *inuse_seed;
+
+    // --------------------------------------------
+    // static member functions
+
+    /**
+     * @brief changes the active seed to input param using srand
+     * 
+     * @param seedToChangeTo 
+     */
+    static void changeActiveSeed(Seeder *seedToChangeTo);
+
+    /**
+     * @brief generates the seed iteration, using 
+     *      SEED_ITERSTEP_MAX as bounding value
+     * 
+     * gets the first unsigned value off our seedOrigin_in and
+     *      then returns the mod(val,SEED_ITERSTEP_MAX)
+     */
+    static unsigned generateSeedIterationStep(unsigned seedOrigin_in);
+
+
+
+    // --------------------------------------------
+    // --------------------------------------------
+    // instance
+    // --------------------------------------------
+    // instance variables
+
+    // the srand(var)
+    unsigned seedOrigin;
+    // how much each iteration steps by
+    unsigned seedStep;
+    // the iteration we're on
+    unsigned seedIteration;
+
+    // --------------------------------------------
+    // instance constructors/destructor
+
+    // default constructor
+    Seeder();
+
+    // construct with seedOrigin_in
+    Seeder(unsigned seedOrigin_in);
+
+    // construct with existing information
+    Seeder(unsigned seedOrigin_in, unsigned seedStep_in, unsigned seedIteration_in);
     
-    /**
-     * @brief sets up our randomizing agent with a seed
-     * 
-     * 
-     */
-    static void setup(unsigned seedIn);
+    // general destructor
+    ~Seeder();
+
+    // --------------------------------------------
+    // instance member functions
 
     /**
-     * @brief Get random number within bounding
+     * @brief changes the active seed to this
      * 
-     * @param bounding : return is less than this value
-     * @return int : value between 0 and bounding
      */
-    static int getRandom(int bounding);
+    void makeActive();
 
     /**
-     * @brief returns float between 0 and 1
+     * @brief compare this to otherSeeder
      * 
-     * @return float 
+     * handles undefined and nullptr
+     * 
+     * @param otherSeeder 
+     * @return true: if same
+     * @return false: otherwise
      */
-    static float getFloat();
+    bool equals(Seeder *otherSeeder);
 
     /**
-     * @brief returns to a point in the line of a particular seed
+     * @brief this is for generating the value we use in srand
      * 
+     * @return unsigned : value to be put into the c++ srand() func
      */
-    static void returnToSeed(unsigned seed, unsigned usage);
-    static void returnToSeed(seedState *seed);
+    unsigned getCurrentSeed();
 
     /**
-     * @brief gets pointer for information about the current seed
+     * @brief for getting the unsigned value to use
      * 
      */
-    static seedState *getSeedStateCopy();
-    
+    unsigned getNextRandom();
+
 };
 
 
+
+
+// end of header guard
 #endif
