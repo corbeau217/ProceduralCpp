@@ -1,9 +1,14 @@
 #include "Util.hpp"
 #include "raylib.h"
 #include "Seeder.hpp"
+#include <math.h>
 
 /**
  * @brief this is basically just perlin noise generator
+ * 
+ * 
+ * honestly lets just make it the basic early one first 
+ *      bc that makes sense
  * 
  */
 class NoisedGrid {
@@ -11,26 +16,24 @@ class NoisedGrid {
     // seed while making
     seedState *gridSeed;
     // grid of vectors
-    Vector2 ***grid;
-    
+    Vector2 ***perlinVectors;
+
     int2D *dimensions; // pixel width/height
 
     // constructor
-    NoisedGrid(int2D *dimensionsIn){
+    NoisedGrid(int2D *dimensionsIn, int stepSize){
         // copy dimensions
         dimensions = dimensionsIn;
         // copy seed
         gridSeed = Seeder::getSeedStateCopy();
         // make array of pointer arrays
-        grid = new float**[dimensions->x];
+        perlinVectors = new Vector2**[dimensions->x];
         // loop through each pointer array and add the elements to it
         for(int x = 0; x < dimensions->x; x++){
-            grid[x] = new float*[dimensions->y];
+            perlinVectors[x] = new Vector2*[dimensions->y];
             for(int y = 0; y < dimensions->y; y++){
                 // set as nullptr for now
-                grid[x][y] = nullptr;
-                grid[x][y] = getNextNoisyFloat();
-
+                perlinVectors[x][y] = nullptr;
             }
         }
     }
@@ -39,11 +42,11 @@ class NoisedGrid {
     ~NoisedGrid(){
         for(int x = 0; x< dimensions->x; x++){
             for(int y = 0; y < dimensions->y; y++){
-                delete grid[x][y];
+                delete perlinVectors[x][y];
             }
-            delete grid[x];
+            delete perlinVectors[x];
         }
-        delete grid;
+        delete perlinVectors;
         delete dimensions;
         delete gridSeed;
     }
@@ -64,10 +67,10 @@ class NoisedGrid {
      * @param loc int2D of the location to get
      * @return float* returned element pointer
      */
-    float *get(int2D *loc){
-        return grid[loc->x][loc->y];
+    Vector2 *get(int2D *loc){
+        return perlinVectors[loc->x][loc->y];
     }
-    float *get(int x, int y){
+    Vector2 *get(int x, int y){
         return get(new int2D{x,y});
     }
 };
